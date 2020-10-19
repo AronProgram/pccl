@@ -1,0 +1,44 @@
+// 如果使用此注释，则使用proto3; 否则使用proto2
+syntax = "proto3";
+
+// 生成类的包名
+option java_package = "com.rufa.library.protocol";
+
+//生成的数据访问类的类名  
+option java_outer_classname = "ProtocolEntity";
+
+message PacketVersion
+{
+	enum Version
+	{
+		NO_VERSION  = 0;
+		V1_VERSION  = 1;
+		MAX_VERSION = 10000;	
+	}
+
+}
+
+message RequestPacketPb 
+{ 		
+		int32 				      		version      = 1;         	//版本
+		string       	             	sequence     = 2;         	//请求序列号
+		int32					      	cmd          = 3;         	//模块标识
+		int32					      	subcmd       = 4;			//模块子命令
+		bytes					      	buffer       = 5;			//二进制buffer，数据储存
+		map<string, string> 			context      = 6;         	//业务上下文：如储存客户端IP,客户端类型，如加密串等等
+		map<string, string> 			status       = 7;         	//框架协议上下文
+}
+
+message ResponsePacketPb
+{ 
+		
+		int32 				    version      = 1;         	//版本
+		string       	      	sequence     = 2;         	//请求序列号
+		int32           		result       = 3;         	//返回码 0：正常，<>0:非正常 
+		bytes					buffer       = 4;			//二进制buffer，数据储存
+		map<string, string> 	status       = 5;         	//框架协议上下文
+		string       	      	msg          = 6; 			//结果描述
+}
+
+
+
