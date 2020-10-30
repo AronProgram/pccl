@@ -16,39 +16,71 @@
 #pragma once
 
 
+#include "BaseHttpResponse.h"
+#include "BaseHttpController.h"
 #include <iostream>
-#include "servant/Application.h"
 #include <string>
+#include <map>
 
-using namespace tars;
 
-/**
- *
- **/
-class BaseServer : public Application
+namespace pccl
 {
 
+
+class BaseApiHandler: public BaseHttpResponse
+{
 public:
-	BaseServer(const std::string& objName);
+	/*
+	* 构造函数
+	*/
+	BaseApiHandler(void);
+	
     /**
-     *
+     * 析构函数
      **/
-    virtual ~BaseServer() {};
+    virtual ~BaseApiHandler(void);
 
-    /**
-     *
-     **/
-	virtual void initialize();
 
-    /**
-     *
-     **/
-    virtual void destroyApp();
+	/**
+	* 重置
+	*/
+	virtual void reset() ;
+	
+	
+
+	void  setBasePointer(BaseHttpController* pBase);
+	
+
+	BaseHttpController&  getBasePointerRef();
+	
+	
+
+public:
+	/**
+	* 业务逻辑处理入口 
+	* 
+	*/
+	virtual int  doProcessApi(void)    ;
+
+protected:
+	/**
+	*  检查参数
+	**/
+	virtual int  doCheckParams(void);
+	
+
+	/**
+	* 业务处理
+	**/
+	virtual int  doProcessWork(void);
+
+	
 	
 protected:
-	std::string _objName;
+	BaseHttpController*  _pBase;
+
 };
 
 
-
+}
 

@@ -16,37 +16,30 @@
 
 #pragma once
 
+
 #include "util/tc_http.h"
 #include "json.h"
-#include "BaseControllerRoute.h"
-#include "BaseControllerProcess.h"
-
 #include <map>
 #include <string>
 
-using namespace tars;
 
 
-
-/**
- *
- *
- */
-class BaseControllerParams : public tars::TC_HttpRequest  
+namespace pccl
 {
 
-public:
-		typedef std::map<std::string,std::string> PARAMS;
+class BaseHttpRequestParams: public tars::TC_HttpRequest
+{
+		typedef std::map<std::string,std::string> QUERY_PARAMS;
 		
 		enum BodyType
 		{	
-			BODY_NOTHING,		
-			BODY_QUERY,
-			BODY_JSON,
+			HTTP_BODY_NOTHING,		
+			HTTP_BODY_QUERY,
+			HTTP_BODY_JSON,
 			//todo ...
 
 			//todo ...
-			BODY_MAX
+			HTTP_BODY_MAX
 		};
 
 
@@ -55,13 +48,13 @@ public:
 	*
 	*  构造函数
 	*/
-	BaseControllerParams(void);
+	BaseHttpRequestParams(void);
 	
     /**
      *
      * 析构函数
      */
-    virtual ~BaseControllerParams(void);
+    virtual ~BaseHttpRequestParams(void);
 
 	/**
 	*
@@ -74,14 +67,9 @@ public:
 	*  清空变量
 	*
 	*/
-	virtual void clean();
+	virtual void reset();
 	
 
-	/**
-	*
-	* 初始化
-	*/
-	int initParse(void);
 
 
 	/*
@@ -95,36 +83,20 @@ public:
 	*/
 	std::string getRemoteIp(void);
 
-    /**
-     * @brief 获取http请求的url，不包括Host,
-     *        例如http://www.qq.com/abc?a=b, 则为:/abc?a=b
-     * @return http请求的url
-     */
-	std::string  getQueryString() { return this->getRequest(); }
-
-
-	/**
-     * @brief 获取http请求的url的后面序列化后的参数列表，不包括Host,
-     *        例如http://www.qq.com/abc?a=b&c=d, 则为: map<a>=b,map<c>=d;
-     * @return http请求的url
-     */
-	PARAMS&      getQueryParams(void) { return _httpURL.headerParams(); }
-	std::string& getQueryParams(const std::string& sKey) { return _httpURL.headerParams(sKey); }
-	
-
+  
 	/*
 	*
 	*  获取http body json数据参数
 	*/
-	Json::Value&    getBodyJsonParams (void)     { return _doc; }
-	//std::string getBodyJsonParams(const std::string& sKey) { return _doc[StringRef(sKey.c_str(),sKey.length())]; }
+	Json::Value&    getJsonParams (void)     { return _doc; }
 
 	/**
-	* 获取http请求的body的后面序列化后的参数列表,
+	* 获取http请求的header/body的后面序列化后的参数列表,
 	* 
 	*/
-	PARAMS&      getBodyParams(void) { return this->bodyParams(); };
-	std::string& getBodyParams(const std::string& sKey) { return bodyParams(sKey); }
+	QUERY_PARAMS&   getQueryParams(void) { return _queryParams; };
+	std::string&    getQueryParams(const std::string& sKey) { return _queryParams[sKey]; }
+
 
 	/**
 	* 获取鉴权用户信息
@@ -132,23 +104,35 @@ public:
 	std::map<std::string,std::string>& getAccount(void) { return _account; }
 	std::string& getAccount(const std::string& sKey) { return _account[sKey]; }
 
-	/*
-	* 打印参数
-	*/
-	void 		dumpParams(void);
 
-
-	void        dumpAccount(void);
-
-private:
-
-
+protected:
+	
 	/*
 	*
 	*  解析报文
 	*  @return  : 0:success, !0: error
 	*/
 	int parse(void);
+
+
+
+private:
+	void       dump(void);
+	
+	/*
+	* 打印参数
+	*/
+	void 		dumpQueryParams(void);
+
+
+	/**
+	* 
+	*/
+	void        dumpAccount(void);
+
+private:
+
+
 		
 	/**
 	*	解析整个http报文
@@ -156,24 +140,29 @@ private:
 	*/
 	int parseHttpPacket(void);
 
+	/**
+	*	http api query string 的后面序列化后的参数列表
+	*/
+	void parseQueryHeader(void);
+	
 	/*
 	*  解析 http body
 	*  @return  : success: OK, error: error
 	*/
 	int parseHttpBody(void);
 
+	/*
+	*  解析 http json body
+	*  @return  : success: OK, error: error
+	*/
+	int parseJsonBody(void);
+	
+	/*
+	*  解析 http query body
+	*/
+	void parseQueryBody(void);
 	
 protected:
-	/*
-	* body的格式：querystirng, json
-	*/
-	BodyType				_bodyType;   
-	
-	/*
-	* http报文解析后json
-	*/
-	Json::Value				_doc; 
-	
 	/*
 	* 输入buffer
 	*/
@@ -183,17 +172,40 @@ protected:
 	* 输出buffer
 	*/
 	std::vector<char>* 		_outBuffer;  
-
-
+	
 	/*
 	* 序列号
 	*/
 	std::string             _sequence;
+
+	
+	/*
+	* body的格式：querystirng, json
+	*/
+	BodyType				_bodyType;   
+
+	/*
+	* http 协议header/body query string参数
+	*/
+	QUERY_PARAMS 			_queryParams;
+
+	
+	/*
+	* http报文解析后json
+	*/
+	Json::Value						  _doc; 
+
 
 	/*
 	* 鉴权用户信息
 	*/
 	std::map<std::string,std::string> _account;
 
+
+	
+
 };
+
+
+}
 

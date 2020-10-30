@@ -15,38 +15,45 @@
  */
 
 
-#include "BaseControllerError.h"
+#include "BaseErrorCode.h"
 
-BaseControllerError::BaseControllerError() 
+
+namespace pccl
+{
+
+
+
+BaseErrorCode::BaseErrorCode() 
 {
 
 
 }
 
-BaseControllerError::~BaseControllerError()
+BaseErrorCode::~BaseErrorCode()
 {
 
 
 }
 
 
-void BaseControllerError::initError()
+void BaseErrorCode::initError()
 {
-	_error[ BaseControllerError::METHOD_ERROR ]    = "method error";
-	_error[ BaseControllerError::ROUTER_ERROR ]    = "router error";
-	_error[ BaseControllerError::PARAMS_ERROR ]    = "params error";
-	_error[ BaseControllerError::AUTHOR_ERROR ]    = "authorize error";
+	_error[ BaseErrorCode::METHOD_ERROR ]    = "method error";
+	_error[ BaseErrorCode::ROUTER_ERROR ]    = "router error";
+	_error[ BaseErrorCode::PARSE_ERROR ]     = "parse http packet error";
+	_error[ BaseErrorCode::PARAMS_ERROR ]    = "params error";
+	_error[ BaseErrorCode::AUTHOR_ERROR ]    = "auth error";
 }
 
 
-void BaseControllerError::reset()
+void BaseErrorCode::reset()
 {
 	
 	
 }
 
 
-const std::string&   BaseControllerError::getError(int code )
+const std::string& BaseErrorCode::getError(int code )
 {
 	if ( _error.count(code)  > 0 )
 		return _error[code];
@@ -55,7 +62,7 @@ const std::string&   BaseControllerError::getError(int code )
 
 }
 
-void	BaseControllerError::addError(int code, const std::string& msg)
+void	BaseErrorCode::addError(int code, const std::string& msg)
 {
 	if ( _error.count(code)  > 0 )
 		return ;
@@ -65,7 +72,7 @@ void	BaseControllerError::addError(int code, const std::string& msg)
 }
 
 
-bool BaseControllerError::isError(int code)
+bool BaseErrorCode::isError(int code)
 {
 	
 	if ( _error.count(code)  > 0 )
@@ -75,5 +82,7 @@ bool BaseControllerError::isError(int code)
 }
 
 
+
+}
 
 

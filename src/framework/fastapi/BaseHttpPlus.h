@@ -17,52 +17,13 @@
 #pragma once
 
 
-#include <map>
-#include <string>
+#include "servant/RemoteLogger.h"
+#include "PcclState.h"
 
 
 
-/**
- *
- * 随机生成类
- */
-class Random 
-{
-
-public:
-    /**
-     * 生成数字和字母
-     *
-     * @param int $len 长度
-     * @return string
-     */
-	 static std::string alnum(int len = 6);
 
 
-	 /**
-     * 仅生成字符
-     *
-     * @param int $len 长度
-     * @return string
-     */
-	static std::string alpha(int len = 6);
-	 
-	/**
-     * 生成指定长度的随机数字
-     *
-     * @param int $len 长度
-     * @return string
-     */
-	static std::string numric(int len = 6);
-
-	/**
-     * 数字和字母组合的随机字符串
-     *
-     * @param int $len 长度
-     * @return string
-     */
-	static std::string nozero(int len = 6);
 
 
-};
 

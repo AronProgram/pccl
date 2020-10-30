@@ -17,13 +17,14 @@
 #pragma once
 
 
-#include "servant/Application.h"
+#include "BaseHttpPlus.h"
 #include "util/tc_http.h"
-#include "optional/optional.h"
 
 
 using namespace tars;
 
+namespace pccl
+{
 
 
 /**
@@ -50,7 +51,7 @@ public:
     virtual void initialize() {}
 
     /**
-     *  
+     *  资源释放
      */
     virtual void destroy() {}
 
@@ -70,7 +71,7 @@ public:
 			_controller.setBuffer( (std::vector<char>*)&inBuffer,&outBuffer);
 			_controller.doProcess();
 			
-			TLOGDEBUG( "FastCgi response outBuffer size:" << outBuffer.size() << std::endl );
+			TLOGDEBUG( "[PCCL] FastApi response outBuffer size:" << outBuffer.size() << std::endl );
 		}
 		catch(exception &ex)
 		{
@@ -91,6 +92,6 @@ private:
 
 };
 
-
+}
 
 

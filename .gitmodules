@@ -1,0 +1,9 @@
+[submodule "thirdparty/jsoncpp"]
+	path = thirdparty/jsoncpp
+	url = https://github.com/open-source-parsers/jsoncpp.git
+[submodule "thirdparty/TarsCpp"]
+	path = thirdparty/TarsCpp
+	url = https://github.com/TarsCloud/TarsCpp.git
+[submodule "thirdparty/random"]
+	path = thirdparty/random
+	url = https://github.com/effolkronium/random.git

@@ -16,13 +16,17 @@
 
 
 
-#include "Random.h"
+#include "BaseRandom.h"
 #include "effolkronium/random.hpp"
 
 
 using RandomEk = effolkronium::random_static;
 
-std::string Random::alnum(int len )
+namespace pccl
+{
+
+
+std::string BaseRandom::alnum(int len )
 {
 
 	std::array<std::string,52> ALNUM   = { "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z" };
@@ -38,7 +42,7 @@ std::string Random::alnum(int len )
 
 }
 
-std::string Random::alpha(int len )
+std::string BaseRandom::alpha(int len )
 {
 
 	std::array<std::string,62> ALPHA   = { "0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
@@ -54,7 +58,7 @@ std::string Random::alpha(int len )
 
 }
 
-std::string numric(int len )
+std::string BaseRandom::numric(int len )
 {
 
 	std::array<std::string,10> NUMRIC  = { "0","1","2","3","4","5","6","7","8","9"};
@@ -71,7 +75,7 @@ std::string numric(int len )
 }
 
 
-std::string nozero(int len )
+std::string BaseRandom::nozero(int len )
 {
 
 	std::array<std::string,9>  NOZERO  = { "1","2","3","4","5","6","7","8","9"};
@@ -88,6 +92,8 @@ std::string nozero(int len )
 }
 
 
+
+}
 
 
 

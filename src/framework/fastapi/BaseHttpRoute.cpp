@@ -16,41 +16,42 @@
 
 
 
-#include "BaseControllerRoute.h"
-#include "servant/Application.h"
-#include "optional/optional.h"
+#include "BaseHttpRoute.h"
+#include "BaseHttpPlus.h"
+
+namespace pccl
+{
 
 
-
-BaseControllerRoute::BaseControllerRoute():_fininsh(false)
+BaseHttpRoute::BaseHttpRoute():_fininsh(false)
 {
 
 
 }
 
-BaseControllerRoute::~BaseControllerRoute()
+BaseHttpRoute::~BaseHttpRoute()
 {
 
 	
 }
 
-void BaseControllerRoute::bindGetRoute(const std::string& sUrl,CALLBACK_FUNC target,bool bAuthorize)
+void BaseHttpRoute::bindGetRoute(const std::string& sUrl,CALLBACK_FUNC target,bool bAuthorize)
 {
 	bindRoute(sUrl,target,HTTP_REQUEST_GET,bAuthorize);
 }
 
-void BaseControllerRoute::bindPostRoute(const std::string& sUrl,CALLBACK_FUNC target,bool bAuthorize)
+void BaseHttpRoute::bindPostRoute(const std::string& sUrl,CALLBACK_FUNC target,bool bAuthorize)
 {
 	bindRoute(sUrl,target,HTTP_REQUEST_POST,bAuthorize);
 }  
 
-void BaseControllerRoute::bindDeleteRoute(const std::string& sUrl,CALLBACK_FUNC target,bool bAuthorize)
+void BaseHttpRoute::bindDeleteRoute(const std::string& sUrl,CALLBACK_FUNC target,bool bAuthorize)
 {
 	bindRoute(sUrl,target,HTTP_REQUEST_DELETE,bAuthorize);
 } 
 
 
-void BaseControllerRoute::bindRoute(const std::string& sUrl,CALLBACK_FUNC target,int method,bool bAuthorize)
+void BaseHttpRoute::bindRoute(const std::string& sUrl,CALLBACK_FUNC target,int method,bool bAuthorize)
 {
 
 	if ( _route.count(sUrl) )
@@ -67,7 +68,7 @@ void BaseControllerRoute::bindRoute(const std::string& sUrl,CALLBACK_FUNC target
 }
 
 
-bool BaseControllerRoute::hasAuthorize(const std::string& sUrl)
+bool BaseHttpRoute::hasAuth(const std::string& sUrl)
 {
 	if ( !_route.count(sUrl) )
 	{	
@@ -88,7 +89,7 @@ bool BaseControllerRoute::hasAuthorize(const std::string& sUrl)
 }
 
 
-bool BaseControllerRoute::hasMethod(const std::string& sUrl,int method)
+bool BaseHttpRoute::hasMethod(const std::string& sUrl,int method)
 {
 
 	if ( !_route.count(sUrl) )
@@ -110,7 +111,7 @@ bool BaseControllerRoute::hasMethod(const std::string& sUrl,int method)
 }
 
 
-int  BaseControllerRoute::doRoute(const std::string& sUrl )
+int  BaseHttpRoute::doRoute(const std::string& sUrl )
 {	
 
 	TLOGINFO("doRoute, exec url:" << sUrl << std::endl);
@@ -122,15 +123,17 @@ int  BaseControllerRoute::doRoute(const std::string& sUrl )
 }
 
 
-void BaseControllerRoute::setFininsh(bool state )
+void BaseHttpRoute::setFininsh(bool state )
 {
 	_fininsh = state;
 }
 
-bool BaseControllerRoute::getFinish()
+bool BaseHttpRoute::getFinish()
 {
 	return _fininsh;
 }
 
+
+}
 
 

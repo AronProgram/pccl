@@ -17,11 +17,15 @@
 #pragma once
 
 
+namespace pccl
+{
+
+
 /**
  *
  *
  */
-class BaseControllerProcess
+class BaseHttpProcess
 {
 
 
@@ -31,14 +35,14 @@ public:
 	*
 	*  构造函数
 	*/
-	BaseControllerProcess(void) {}
+	BaseHttpProcess(void) {}
 
 	
     /**
      *
      * 析构函数
      */
-    virtual ~BaseControllerProcess(void) {}
+    virtual ~BaseHttpProcess(void) {}
 
 	
 public:
@@ -46,7 +50,7 @@ public:
 	*
 	* 初始化
 	*/
-	virtual int initialization(void) = 0;
+	virtual void initialization(void) = 0;
 
 	
 	
@@ -59,4 +63,8 @@ public:
 
 
 };
+
+
+
+}
 

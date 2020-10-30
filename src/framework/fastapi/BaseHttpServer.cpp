@@ -14,24 +14,28 @@
  * specific language governing permissions and limitations under the License.
  */
 
-#include "BaseServer.h"
-#include "ControllerImplement.h"
-#include "BaseController.h"
+#include "BaseHttpServer.h"
+#include "HttpControllerImplement.h"
+#include "BaseHttpController.h"
 #include <string>
 
 
 using namespace std;
 using namespace tars;
 
+namespace pccl
+{
 
-BaseServer::BaseServer(const std::string& objName):
+
+
+BaseHttpServer::BaseHttpServer(const std::string& objName):
 _objName(objName)
 {
 	
 	
 }
 
-void BaseServer::initialize()
+void BaseHttpServer::initialize()
 {
     //initialize application here:
     //addServant< ControllerImplement<UserController> >(ServerConfig::Application + "." + ServerConfig::ServerName + _objName);
@@ -39,10 +43,12 @@ void BaseServer::initialize()
 
 }
 /////////////////////////////////////////////////////////////////
-void BaseServer::destroyApp()
+void BaseHttpServer::destroyApp()
 {
     //destroy application here:
     //...
+}
+
 }
 
 

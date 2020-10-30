@@ -16,76 +16,84 @@
 
 #pragma once
 
-#include "util/tc_http.h"
-#include "util/tc_network_buffer.h"
-#include "json.h"
-#include "BaseControllerRoute.h"
-#include "BaseControllerProcess.h"
-#include "BaseControllerParams.h"
 
-
-#include <map>
+#include "BaseHttpController.h"
+#include "BaseHttpRouteFactory.h"
+#include "BaseApiHandler.h"
 #include <string>
-#include <vector>
-
-using namespace tars;
+#include <memory>
 
 
 
-
-/**
- *
- *
- */
-class BaseControllerError  
+namespace pccl
 {
 
-public:
-	typedef enum _ErrCode_
-	{
-		SUCCESS                 = 0,		
-		METHOD_ERROR			= 100,
-		ROUTER_ERROR			= 101,
-		PARAMS_ERROR            = 110,		
-		AUTHOR_ERROR            = 403,
-		
-		ERROR_MAX
-			
-	}ErrorCode;
+
+class BaseHttpApiController : public BaseHttpController
+{
+
 
 public:
+	
 	
 	/**
 	*
 	*  构造函数
 	*/
-	BaseControllerError(void);
+	BaseHttpApiController();
 	
     /**
      *
      * 析构函数
      */
-    virtual ~BaseControllerError();
+    virtual ~BaseHttpApiController();
 
-	/*
+	/**
 	*
-	*  清空变量
-	*
+	* 清空环境
 	*/
-	virtual void 	reset();
+	virtual void reset();
+	
 
-	const std::string& getError(int code );
+	/**
+	*
+	* 初始化路由，统一处理处接口
+	*/ 
+	virtual void initRoute(void);
+	
 
-	virtual void	initError();
 
-	void            addError(int code, const std::string& msg);
-	bool            isError(int code);
+protected:	
+	
+	/**
+	*  处理入口
+	*/
+	virtual int entrance(void);
+	
 
 private:
-	std::map<int,std::string> _error;
-	std::string               _empty;
-		
+	/**
+	*   注册api handler 函数
+	*  @parmams: sApi ，API名称
+	*  @params:  httpMethod, POST,GET,DELETE
+	*  @params:  handler,  BaseBpiHandler 
+	*  @params:  isAuth,   是否要鉴权
+	*
+	*/
+	void    regiterRoute(const std::string& sApi,BaseApiHandler* handler, int      method,  bool isAuth = false );
 
+private:
+	/*
+	* api handler 工厂
+	*/
+	RegisterRouteHandlerFactory 	_factory;
 
+	
+	
 };
+
+
+}
+
+
 

@@ -23,13 +23,15 @@
 
 using namespace tars;
 
+namespace pccl
+{
 
 
 /**
  *
  *
  */
-class BaseControllerRoute 
+class BaseHttpRoute 
 {
 
 public:
@@ -55,13 +57,13 @@ public:
 	*
 	*  构造函数
 	*/
-	BaseControllerRoute(void);
+	BaseHttpRoute(void);
 	
     /**
      *
      * 析构函数
      */
-    virtual ~BaseControllerRoute();
+    virtual ~BaseHttpRoute();
 
 	
 public:
@@ -107,7 +109,7 @@ public:
 	*
 	*  判断url是否需要授权
 	*/
-	bool hasAuthorize(const std::string& sUrl);
+	bool hasAuth(const std::string& sUrl);
 
 	/**
 	*
@@ -165,4 +167,7 @@ private:
 	bool                _fininsh; 
 
 };
+
+
+}
 

@@ -16,79 +16,75 @@
 
 
 
-#include "BaseController.h"
-#include "servant/Application.h"
-#include "optional/optional.h"
-#include "util/tc_epoll_server.h"
+#include "BaseHttpController.h"
+#include "BaseHttpPlus.h"
 #include "util/tc_common.h"
 #include "util/tc_cgi.h"
 #include <string>
 
 
-
-
-BaseController::BaseController(void) 
+namespace pccl
 {
-	
+
+
+BaseHttpController::BaseHttpController(void) 
+{
+	initialization();
 }
 
 
-BaseController::~BaseController()
+BaseHttpController::~BaseHttpController()
 {
 
 }
 
 
 
-tars::TC_NetWorkBuffer::PACKET_TYPE BaseController::checkHttpPacket(tars::TC_NetWorkBuffer& in, std::vector<char>& out)
+tars::TC_NetWorkBuffer::PACKET_TYPE BaseHttpController::checkHttpPacket(tars::TC_NetWorkBuffer& in, std::vector<char>& out)
 {
 	return in.parseHttp(in,out);
 }
 
 
 
-void BaseController::clean()
+void BaseHttpController::reset()
 {
-	BaseControllerParams::clean();	
+	BaseHttpRequestParams::reset();	
 }
 
 
-int BaseController::initialization(void)
+void BaseHttpController::initialization(void)
 {	
-	// 设置路由
-	if ( !this->getFinish() )
-	{
-		initError();
+	initError();
 		
-		initRoute();		
-		
-		this->setFininsh(true);
-	}
-	
-	// 
-	int result = initParse();
-	
-	return result;
+	initRoute();	
 }
 
-void BaseController::success(int code,const std::string& msg)
+
+void BaseHttpController::success( const std::string& data )
+{
+	result(data);
+}
+
+
+void BaseHttpController::success(int code,const std::string& msg)
 {
 	Json::Value doc;
 	success(doc,code,msg);
 }
 
-void BaseController::success(Json::Value& data,int code,const std::string& msg )
+void BaseHttpController::success(Json::Value& data,int code,const std::string& msg )
 {
 	result(data,code,msg);
 }
 
-void BaseController::error(int code,const std::string& msg )
+void BaseHttpController::error(int code,const std::string& msg )
 {	
 	Json::Value doc;
 	error(doc,code,msg);
 }
 
-void BaseController::error(Json::Value& data, int code,const std::string& msg)
+void BaseHttpController::error(Json::Value& data, int code,const std::string& msg)
 {	
 	if ( this->isError(code) )
 	{
@@ -101,7 +97,7 @@ void BaseController::error(Json::Value& data, int code,const std::string& msg)
 
 }
 
-void BaseController::rediect(const std::string& sUrl)
+void BaseHttpController::redirect(const std::string& sUrl)
 {
 	std::map<std::string,std::string> header;
 	const std::vector<std::string>    cookie;
@@ -109,22 +105,22 @@ void BaseController::rediect(const std::string& sUrl)
 	header["Content-Type"]   = "text/html";
 	header["Location"]       = tars::TC_Cgi::decodeURL(sUrl);
 	
-	rediect( header,cookie );
+	redirect( header,cookie );
 }
 
 
-void BaseController::rediect(const std::string& sUrl, const std::vector<std::string>& cookieHeader)
+void BaseHttpController::redirect(const std::string& sUrl, const std::vector<std::string>& cookieHeader)
 {
 	
 	std::map<std::string,std::string> header;
 	header["Content-Type"]   = "text/html";
 	header["Location"]       = tars::TC_Cgi::decodeURL(sUrl);
 	
-	rediect( header,cookieHeader );
+	redirect( header,cookieHeader );
 
 }
 
-void BaseController::rediect(const std::map<std::string,std::string>& httpHeader,const std::vector<std::string>& cookie)
+void BaseHttpController::redirect(const std::map<std::string,std::string>& httpHeader,const std::vector<std::string>& cookie)
 {
 	result( httpHeader,cookie,302 ,"Found","" );
 }
@@ -132,7 +128,7 @@ void BaseController::rediect(const std::map<std::string,std::string>& httpHeader
 
 
 
-void BaseController::authorize(const std::string& sMsg)
+void BaseHttpController::auth(const std::string& sMsg)
 {	
 	std::map<std::string,std::string> header;	
 	Json::Value                       doc;
@@ -140,7 +136,17 @@ void BaseController::authorize(const std::string& sMsg)
 	result( header,403, "Forbidden", sRsp );
 }	
 
-void BaseController::result( Json::Value& data)
+
+void BaseHttpController::result( const std::string& data)
+{
+	std::map<std::string,std::string> header;	
+
+	header["Content-Type"]  = "application/json;charset=utf-8";		
+	result(header, 200,  "OK", data );
+}
+
+
+void BaseHttpController::result( Json::Value& data)
 {
 	int code        = 0;
 	std::string msg = "OK";
@@ -148,7 +154,7 @@ void BaseController::result( Json::Value& data)
 }
 
 
-void BaseController::result( Json::Value& data, int code, const std::string& msg )
+void BaseHttpController::result( Json::Value& data, int code, const std::string& msg )
 {	
 	std::map<std::string,std::string> header;	
 
@@ -159,7 +165,10 @@ void BaseController::result( Json::Value& data, int code, const std::string& msg
 }
 
 
-void BaseController::result(const std::map<std::string,std::string>& httpHeader, int httpStutus, const std::string& about, const std::string& body   )
+
+
+
+void BaseHttpController::result(const std::map<std::string,std::string>& httpHeader, int httpStutus, const std::string& about, const std::string& body   )
 {
 	std::vector<std::string> cookie;
 	result(httpHeader,cookie,httpStutus,about,body);
@@ -167,7 +176,7 @@ void BaseController::result(const std::map<std::string,std::string>& httpHeader,
 }
 
 
-void BaseController::result(const std::map<std::string,std::string>& httpHeader,  const std::vector<std::string>& cookieHeader, int httpStutus, const std::string& about , const std::string& body	)
+void BaseHttpController::result(const std::map<std::string,std::string>& httpHeader,  const std::vector<std::string>& cookieHeader, int httpStutus, const std::string& about , const std::string& body	)
 {
 
 	tars::TC_HttpResponse rsp;	
@@ -198,7 +207,7 @@ void BaseController::result(const std::map<std::string,std::string>& httpHeader,
 
 
 
-std::string BaseController::serialize( Json::Value& data ,int code,const std::string& msg)
+std::string BaseHttpController::serialize( Json::Value& data ,int code,const std::string& msg)
 {
 
 	Json::Value      doc;
@@ -215,7 +224,7 @@ std::string BaseController::serialize( Json::Value& data ,int code,const std::st
 }
 
 
-int BaseController::doProcess(void)
+int BaseHttpController::doProcess(void)
 {
 	int result = pccl::STATE_SUCCESS;
 
@@ -223,12 +232,13 @@ int BaseController::doProcess(void)
 	//clean();
 
 	
-	TLOGDEBUG( "doProcessInit" << std::endl );
+	TLOGDEBUG( "doProcessParse" << std::endl );
 	
 	// 初始化
-	result = doProcessInit();
+	result = doProcessParse();
 	if ( pccl::STATE_ERROR == result )
 	{	
+		this->error(BaseErrorCode::PARSE_ERROR);
 		return pccl::STATE_SUCCESS;
 	}	
 
@@ -251,24 +261,13 @@ int BaseController::doProcess(void)
 }
 
 
-int BaseController::doProcessInit(void)
+int BaseHttpController::doProcessParse(void)
 {
-	// 初始化
-	int result = initialization();
-	if ( pccl::STATE_SUCCESS != result )
-	{	
-		//todo 
-		this->error();
-		return pccl::STATE_ERROR;
-	}	
-
-	// todo
-
-	return pccl::STATE_SUCCESS;
+	return  parse();
 }
 
 
-int BaseController::doProcessRoute(void)
+int BaseHttpController::doProcessRoute(void)
 {
 
 	// 调用处理过程
@@ -279,21 +278,21 @@ int BaseController::doProcessRoute(void)
 	TLOGDEBUG("doProcess , sequence:" <<  this->getSequence() << ",method: " <<  method << ",url:" << sUrl  << std::endl);
 
 	// 处理option/head命令
-	if ( this->isOPTIONS() || this->isHEADS() )
+	if ( this->isOPTIONS() || this->isHEAD() )
 	{
 		this->success();
 		return pccl::STATE_SUCCESS;
 	}
 
 	//处理url:是否登录，授权	
-	if (  this->hasAuthorize(sUrl) )
+	if (  this->hasAuth(sUrl) )
 	{		
 		TLOGDEBUG( "authorize url:" << sUrl << std::endl);
 
-		result = this->doProcessAuthorize();
+		result = this->doProcessAuth();
 		if ( pccl::STATE_SUCCESS != result )
 		{
-			this->authorize("AUTH ERROR");	
+			this->auth("AUTH ERROR");	
 			return pccl::STATE_ERROR;
 		}
 	}
@@ -309,7 +308,7 @@ int BaseController::doProcessRoute(void)
 	}
 
 	
-	TLOGDEBUG( "do ruote, url: " << sUrl << std::endl);
+	TLOGDEBUG( "do api ruote, url: " << sUrl << std::endl);
 	
 	result = this->doRoute(sUrl);
 	if ( pccl::STATE_SUCCESS != result )
@@ -317,8 +316,7 @@ int BaseController::doProcessRoute(void)
 		this->error(ROUTER_ERROR);		
 		return pccl::STATE_ERROR;
 	}
-
-	TLOGDEBUG( "do ruote finish, url: " << sUrl << std::endl);
+	
 
 	return pccl::STATE_SUCCESS;	
 	
@@ -326,11 +324,15 @@ int BaseController::doProcessRoute(void)
 
 
 
-int BaseController::doProcessAuthorize(void)
+int BaseHttpController::doProcessAuth(void)
 {
 
 	return pccl::STATE_SUCCESS;
 }
 
+
+
+
+}
 
 
