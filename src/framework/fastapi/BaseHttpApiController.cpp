@@ -27,7 +27,7 @@ namespace pccl
 
 BaseHttpApiController::BaseHttpApiController()
 {
-	
+	initErrorCode();
 }
 
 
@@ -41,6 +41,13 @@ void BaseHttpApiController::reset()
 {
 	BaseHttpController::reset();
 }
+
+
+void BaseHttpApiController::initErrorCode(void)
+{
+	
+}
+
 
 
 void BaseHttpApiController::initRoute(void)

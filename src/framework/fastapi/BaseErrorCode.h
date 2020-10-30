@@ -93,8 +93,8 @@ public:
 	**/
 	bool            isError(int code);
 
-protected:	
-	virtual void	initError();
+private:	
+	void	    	initError();
 
 private:
 	std::map<int,std::string> _error;

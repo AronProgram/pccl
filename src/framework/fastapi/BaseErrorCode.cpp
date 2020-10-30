@@ -25,8 +25,7 @@ namespace pccl
 
 BaseErrorCode::BaseErrorCode() 
 {
-
-
+	initError();
 }
 
 BaseErrorCode::~BaseErrorCode()

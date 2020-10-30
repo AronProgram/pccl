@@ -55,8 +55,6 @@ void BaseHttpController::reset()
 
 void BaseHttpController::initialization(void)
 {	
-	initError();
-		
 	initRoute();	
 }
 

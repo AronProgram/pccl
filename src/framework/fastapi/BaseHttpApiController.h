@@ -60,10 +60,17 @@ public:
 	* 初始化路由，统一处理处接口
 	*/ 
 	virtual void initRoute(void);
-	
+
 
 
 protected:	
+
+	/**
+	*
+	* 统一错误码
+	*/	
+	virtual void initErrorCode(void);
+
 	
 	/**
 	*  处理入口
