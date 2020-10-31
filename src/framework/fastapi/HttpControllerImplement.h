@@ -67,7 +67,7 @@ public:
 
 		try
 		{
-			_controller.clean();
+			_controller.reset();
 			_controller.setBuffer( (std::vector<char>*)&inBuffer,&outBuffer);
 			_controller.doProcess();
 			

@@ -86,22 +86,7 @@ public:
 	* @ scmd: 模块子命令
 	*/	
 	std::string getRouteId(int cmd,int scmd);
-
-
-	/**
-	*  设置路由完成
-	*  @params: bool state , 状态
-	*  @return: nothing
-	*/
-	void setFininsh(bool state = true);
-
-
-	/**
-	* 获取路由设置状态 
-	*
-	*/
-	bool getFinish();
-
+	
 private:
 	/*
 	* 路由调用参数
@@ -137,11 +122,6 @@ private:
 	*/
 	CALLBACK_FUNC                      _func;
 
-
-	/*
-	* 路由设置是否完成
-	*/
-	bool                _fininsh; 
 
 };
 

@@ -25,15 +25,15 @@ using namespace tars;
 /**
  *
  **/
-class BaseServer : public Application
+class BaseLogicServer : public Application
 {
 
 public:
-	BaseServer(const std::string& objName);
+	BaseLogicServer(const std::string& objName);
     /**
      *
      **/
-    virtual ~BaseServer() {};
+    virtual ~BaseLogicServer() {};
 
     /**
      *

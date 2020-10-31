@@ -52,7 +52,7 @@ void BaseHttpApiController::initErrorCode(void)
 
 void BaseHttpApiController::initRoute(void)
 {	
-	regiterRoute("/api/helloworld",  new BaseApiHandler(), 0, true );
+	//regiterRoute("/api/helloworld",  new BaseApiHandler(), 0, true );
 }
 
 
@@ -71,6 +71,12 @@ int BaseHttpApiController::entrance(void)
 	//获取的api handler
 	std::string          reqUrl    =  this->getRequestUrl();
 	BaseApiHandler*      pHandler  = _factory.createHandler(reqUrl);
+
+	if ( pHandler == NULL ) 
+	{
+		this->error(BaseErrorCode::SERVER_ERROR);
+		return pccl::STATE_SUCCESS;
+	}
 
 	//处理前准备
 	pHandler->reset();

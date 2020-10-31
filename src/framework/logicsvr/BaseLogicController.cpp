@@ -17,11 +17,9 @@
 
 
 #include "BaseLogicController.h"
-#include "servant/Application.h"
-#include "util/tc_epoll_server.h"
+#include "BaseLogicPlus.h"
 #include "util/tc_common.h"
 #include "Packet.pb.h"
-#include "optional/optional.h"
 #include <string>
 
 
@@ -66,8 +64,6 @@ tars::TC_NetWorkBuffer::PACKET_TYPE BaseLogicController::checkPacket(tars::TC_Ne
 	// 两步必须不能少
     out = in.getBuffers();
     in.clearBuffers();
-
-
 	
 	TLOGDEBUG("checkPacket success,cmd:" << packet.cmd() << ",subcmd:" << packet.subcmd() << std::endl);
 	
@@ -91,12 +87,10 @@ void BaseLogicController::clean()
 int BaseLogicController::initialization(void)
 {	
 	//设置路由
-	if ( !this->getFinish() )
-	{
-		initRoute();
-
-		this->setFininsh(true);
-	}
+	
+	
+	initRoute();		
+	
 	
 	//解析
 	int result = initParse();

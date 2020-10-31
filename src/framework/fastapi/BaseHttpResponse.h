@@ -52,8 +52,8 @@ public:
 	void                 setResult(int result);
 	
 	const std::string&   getErrMsg(void)      { return _message; }
-	void                 setErrMsg(const std::string& message, int result = 500 );
-	void                 setErrMsg(const char* message,int result = 500);
+	void                 setErrMsg(const std::string& message, int result = 510 );
+	void                 setErrMsg(const char* message,int result = 510 );
 	std::string          getRedirect() { return _redirect; }
 	void                 setRedirect(const std::string& sUrl) { _redirect = sUrl; }
 	bool                 hasRedirect() { return _redirect.empty() ? false : true ; }

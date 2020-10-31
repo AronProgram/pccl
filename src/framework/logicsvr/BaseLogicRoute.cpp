@@ -17,13 +17,12 @@
 
 
 #include "BaseLogicRoute.h"
-#include "servant/Application.h"
-#include "optional/optional.h"
 #include "fmt/format.h"
+#include "BaseLogicPlus.h"
 
 
 
-BaseLogicRoute::BaseLogicRoute():_fininsh(false)
+BaseLogicRoute::BaseLogicRoute()
 {
 
 
@@ -95,17 +94,6 @@ std::string BaseLogicRoute::getRouteId(int cmd,int scmd)
 {
 	std::string routeid = fmt::format("#{0}#{1}", cmd,scmd);
 	return routeid;
-}
-
-
-void BaseLogicRoute::setFininsh(bool state )
-{
-	_fininsh = state;
-}
-
-bool BaseLogicRoute::getFinish()
-{
-	return _fininsh;
 }
 
 

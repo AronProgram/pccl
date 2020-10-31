@@ -2,7 +2,7 @@
 syntax = "proto3";
 
 // 生成类的包名
-option java_package = "com.rufa.library.protocol";
+option java_package = "com.pccl.library.protocol";
 
 //生成的数据访问类的类名  
 option java_outer_classname = "ProtocolEntity";

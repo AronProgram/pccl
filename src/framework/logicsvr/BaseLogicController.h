@@ -15,6 +15,7 @@
  */
 
 #pragma once
+
 #include "util/tc_network_buffer.h"
 #include "json.h"
 #include "BaseLogicRoute.h"
@@ -24,9 +25,6 @@
 
 #include <map>
 #include <string>
-
-using namespace tars;
-
 
 
 

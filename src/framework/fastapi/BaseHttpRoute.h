@@ -118,19 +118,6 @@ public:
 	bool hasMethod(const std::string& sUrl,int method);
 
 
-	/**
-	*  设置路由完成
-	*  @params: bool state , 状态
-	*  @return: nothing
-	*/
-	void setFininsh(bool state = true);
-
-
-	/**
-	* 获取路由设置状态 
-	*
-	*/
-	bool getFinish();
 
 private:
 	/*
@@ -160,11 +147,7 @@ private:
 	* 路由
 	*/
 	std::map<std::string,EXEC_PARAM >  _route;
-
-	/*
-	* 路由设置是否完成
-	*/
-	bool                _fininsh; 
+	
 
 };
 

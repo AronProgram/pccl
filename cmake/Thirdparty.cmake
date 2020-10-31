@@ -8,6 +8,7 @@ set(THIRDPARTY_PATH "${PROJECT_SOURCE_DIR}/thirdparty")
 option(TARS_CPP   "option for TarsCpp" ON)
 option(JSON_CPP   "option for jsoncpp" ON)
 option(RANDOM_CPP "option for random" ON)
+option(FMT_CPP    "option for fmt" ON)
 
 #################################################### 
 ## definitions 
@@ -112,6 +113,31 @@ if (RANDOM_CPP)
 
 endif (RANDOM_CPP)
 
+
+
+#################################################### 
+## RANDOM_CPP 
+## 
+####################################################
+
+if (FMT_CPP)
+
+    set(FMT_DIR_INC "/usr/local/include")
+    include_directories(${FMT_DIR_INC})   
+
+    set(LIB_FMT "fmt")
+
+    ExternalProject_Add(ADD_${LIB_FMT}                
+            CONFIGURE_COMMAND ${CMAKE_COMMAND} . 
+            SOURCE_DIR ${THIRDPARTY_PATH}/fmt
+            BUILD_IN_SOURCE 1
+            BUILD_COMMAND make
+            INSTALL_COMMAND make  install
+            )
+
+endif (FMT_CPP)
+
+
 #################################################### 
 ## message 
 ## 
@@ -120,6 +146,8 @@ message("----------------------------------------------------")
 message("TARS_CPP:                  ${TARS_CPP}")
 message("JSON_CPP:                  ${JSON_CPP}")
 message("RANDOM_CPP:                ${RANDOM_CPP}")
+message("FMT_CPP:                   ${FMT_CPP}")
+
 message("----------------------------------------------------")
 
 

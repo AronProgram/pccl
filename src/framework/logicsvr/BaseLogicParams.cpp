@@ -17,9 +17,7 @@
 
 
 #include "BaseLogicParams.h"
-#include "servant/Application.h"
-#include "optional/optional.h"
-#include "util/tc_epoll_server.h"
+#include "BaseLogicPlus.h"
 #include "util/tc_common.h"
 #include <string>
 
@@ -99,17 +97,17 @@ const std::string& BaseLogicParams::getBuffer(void)
 	return _packtes.buffer();
 }
 
-
+#if 0
 const std::map<std::string,std::string>& BaseLogicParams::getContext(void)
 {
-	return this->context();
+	return _packtes.context();
 }
 
 const std::map<std::string,std::string>& BaseLogicParams::getStatus(void)
 {
-	return this->status();
+	return _packtes.status();
 }
-
+#endif 
 
 
 void 		BaseLogicParams::dumpParams(void)

@@ -7,3 +7,6 @@
 [submodule "thirdparty/random"]
 	path = thirdparty/random
 	url = https://github.com/effolkronium/random.git
+[submodule "thirdparty/fmt"]
+	path = thirdparty/fmt
+	url = https://github.com/fmtlib/fmt.git

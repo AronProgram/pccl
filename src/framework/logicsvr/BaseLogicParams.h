@@ -91,12 +91,14 @@ public:
 	*/
 	const std::string& getBuffer(void);
 
+	#if 0
 	/**
 	* 获取上下文环境参数
 	*/
 	const std::map<std::string,std::string>& getContext(void);
 	
 	const std::map<std::string,std::string>& getStatus(void);
+	#endif
 	
 	/*
 	* 打印参数

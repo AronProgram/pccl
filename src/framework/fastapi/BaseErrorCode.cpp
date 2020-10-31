@@ -42,6 +42,7 @@ void BaseErrorCode::initError()
 	_error[ BaseErrorCode::PARSE_ERROR ]     = "parse http packet error";
 	_error[ BaseErrorCode::PARAMS_ERROR ]    = "params error";
 	_error[ BaseErrorCode::AUTHOR_ERROR ]    = "auth error";
+	_error[ BaseErrorCode::SERVER_ERROR ]    = "server error";
 }
 
 

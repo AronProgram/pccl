@@ -14,7 +14,7 @@
  * specific language governing permissions and limitations under the License.
  */
 
-#include "BaseServer.h"
+#include "BaseLogicServer.h"
 #include "LogicImplement.h"
 #include "BaseLogicController.h"
 #include <string>
@@ -24,14 +24,14 @@ using namespace std;
 using namespace tars;
 
 
-BaseServer::BaseServer(const std::string& objName):
+BaseLogicServer::BaseLogicServer(const std::string& objName):
 _objName(objName)
 {
 	
 	
 }
 
-void BaseServer::initialize()
+void BaseLogicServer::initialize()
 {
     //initialize application here:
     //addServant< ControllerImplement<UserController> >(ServerConfig::Application + "." + ServerConfig::ServerName + _objName);
@@ -39,7 +39,7 @@ void BaseServer::initialize()
 
 }
 /////////////////////////////////////////////////////////////////
-void BaseServer::destroyApp()
+void BaseLogicServer::destroyApp()
 {
     //destroy application here:
     //...

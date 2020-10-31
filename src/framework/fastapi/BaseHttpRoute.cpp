@@ -23,7 +23,7 @@ namespace pccl
 {
 
 
-BaseHttpRoute::BaseHttpRoute():_fininsh(false)
+BaseHttpRoute::BaseHttpRoute()
 {
 
 
@@ -120,17 +120,6 @@ int  BaseHttpRoute::doRoute(const std::string& sUrl )
 	int result = exec.call();	
 	return result;
 	
-}
-
-
-void BaseHttpRoute::setFininsh(bool state )
-{
-	_fininsh = state;
-}
-
-bool BaseHttpRoute::getFinish()
-{
-	return _fininsh;
 }
 
 
