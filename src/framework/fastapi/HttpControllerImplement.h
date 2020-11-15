@@ -32,18 +32,18 @@ namespace pccl
  *
  */
 template<typename Controller>
-class ControllerImplement : public Servant {
+class HttpControllerImplement : public Servant {
 public:
     /**
      * 构造函数
      */
-	ControllerImplement(void) {} 
+	HttpControllerImplement(void) {} 
 	
 	
     /**
      * 析构函数
      */
-    virtual ~ControllerImplement() {}
+    virtual ~HttpControllerImplement() {}
 
     /**
      * 初始化

@@ -11,7 +11,7 @@ project (PCCL)
 ## 
 ####################################################
 
-
+include("${PROJECT_SOURCE_DIR}/cmake/BuildFunction.cmake")
 include("${PROJECT_SOURCE_DIR}/cmake/Common.cmake")
 include("${PROJECT_SOURCE_DIR}/cmake/Thirdparty.cmake")
 
