@@ -210,15 +210,15 @@ if (JWT_CPP)
 
 	set(LIB_JWT "libjwt.a")
     set(JWT_DIR_INC "/usr/local/include")
-    set(JWT_LIB_DIR "/usr/local/jwt-cpp")
+    set(JWT_LIB_DIR "/usr/local/cpp-jwt")
     
     include_directories(${JWT_DIR_INC})   
 	#link_directories(${JWT_LIB_DIR})
     
 
     ExternalProject_Add(ADD_${LIB_JWT}                
-            CONFIGURE_COMMAND ${CMAKE_COMMAND} . -DBUILD_TESTS=0
-            SOURCE_DIR ${THIRDPARTY_PATH}/jwt
+            CONFIGURE_COMMAND ${CMAKE_COMMAND} . -DCPP_JWT_BUILD_TESTS=0
+            SOURCE_DIR ${THIRDPARTY_PATH}/cpp-jwt
             BUILD_IN_SOURCE 1
             BUILD_COMMAND make
             INSTALL_COMMAND make  install

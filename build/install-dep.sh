@@ -22,7 +22,7 @@ yum install zlib   zlib-devel
 yum install unzip
 yum install curl curl-devel
 yum install perl perl-IPC-Cmd
-
+yum install gtest gtest-devel
 
 ### 子模块
 git submodule update --init --recursive
