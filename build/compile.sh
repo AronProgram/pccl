@@ -10,6 +10,7 @@ DIR=`pwd`;
 
 function update()
 {
+	cd ../
 	git submodule update --init --recursive;
 }
 

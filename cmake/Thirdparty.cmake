@@ -42,17 +42,6 @@ IF(UNIX)
 ENDIF(UNIX)
 
 
-
-IF(UNIX)
-	
-    FIND_PACKAGE(CURL)
-    IF(CURL_FOUND)
-		 include_directories(${CURL_INCLUDE_DIRS})
-    ENDIF()
-    
-ENDIF(UNIX)
-
-
 IF(UNIX)
 	
     FIND_PACKAGE(CURL)
@@ -90,15 +79,20 @@ if (TARS_CPP)
     include_directories(${TARS_CPP_DIR_INC})
     link_directories(${TARS_CPP_LIB_DIR})
 
-    set(LIB_TARSCPP "tarscpp")
 
-    ExternalProject_Add(ADD_${LIB_TARSCPP}                
+	if (NOT EXISTS "${THIRDPARTY_PATH}/TarsCpp/lib/libtarsservant.a" )
+	
+	    ExternalProject_Add(ADD_tarscpp                
             CONFIGURE_COMMAND ${CMAKE_COMMAND} . 
             SOURCE_DIR ${THIRDPARTY_PATH}/TarsCpp
             BUILD_IN_SOURCE 1
             BUILD_COMMAND make 
             INSTALL_COMMAND make  install
-            )
+            )  
+            
+	endif()
+
+
 
 endif (TARS_CPP)
 
@@ -117,14 +111,19 @@ if (JSON_CPP)
 
     set(LIB_JSONCPP "jsoncpp")
 
-    ExternalProject_Add(ADD_${LIB_JSONCPP}                
+    if (NOT EXISTS "${THIRDPARTY_PATH}/jsoncpp/lib/libjsoncpp_static.a" )
+	
+ 		ExternalProject_Add(ADD_jsoncpp                
             CONFIGURE_COMMAND ${CMAKE_COMMAND} . 
             SOURCE_DIR ${THIRDPARTY_PATH}/jsoncpp
             BUILD_IN_SOURCE 1
             BUILD_COMMAND make
             INSTALL_COMMAND make  install
-            )
+            ) 
+            
+	endif()
 
+   
 endif (JSON_CPP)
 
 
@@ -140,7 +139,7 @@ if (RANDOM_CPP)
 
     set(LIB_RANDOM "random")
 
-    ExternalProject_Add(ADD_${LIB_RANDOM}                
+    ExternalProject_Add(ADD_random                
             CONFIGURE_COMMAND ${CMAKE_COMMAND} . 
             SOURCE_DIR ${THIRDPARTY_PATH}/random
             BUILD_IN_SOURCE 1
@@ -164,13 +163,17 @@ if (FMT_CPP)
 
     set(LIB_FMT "fmt")
 
-    ExternalProject_Add(ADD_${LIB_FMT}                
-            CONFIGURE_COMMAND ${CMAKE_COMMAND} . 
-            SOURCE_DIR ${THIRDPARTY_PATH}/fmt
-            BUILD_IN_SOURCE 1
-            BUILD_COMMAND make
-            INSTALL_COMMAND make  install
-            )
+    if (NOT EXISTS "${THIRDPARTY_PATH}/fmt/libfmt.a" )
+
+	    ExternalProject_Add(ADD_fmt               
+	            CONFIGURE_COMMAND ${CMAKE_COMMAND} . 
+	            SOURCE_DIR ${THIRDPARTY_PATH}/fmt
+	            BUILD_IN_SOURCE 1
+	            BUILD_COMMAND make
+	            INSTALL_COMMAND make  install
+	            )
+
+     endif()
 
 endif (FMT_CPP)
 
@@ -187,9 +190,11 @@ if (PROTOBUFF_CPP)
     
     include_directories(${PROTOBUFF_DIR_INC})   
 	link_directories(${PROTOBUFF_LIB_DIR})
-    
 
-    ExternalProject_Add(ADD_${LIB_PROTOBUFF}                
+
+    if (NOT EXISTS "${THIRDPARTY_PATH}/protobuf/libprotobuf.a" )
+
+	   ExternalProject_Add(ADD_protobuf                
             CONFIGURE_COMMAND ${CMAKE_COMMAND} . -Dprotobuf_BUILD_TESTS=OFF
             SOURCE_DIR ${THIRDPARTY_PATH}/protobuf/cmake
             BUILD_IN_SOURCE 1
@@ -197,6 +202,11 @@ if (PROTOBUFF_CPP)
             INSTALL_COMMAND make  install
             )
 
+
+     endif()
+
+
+    
 endif (PROTOBUFF_CPP)
 
 
@@ -213,16 +223,16 @@ if (JWT_CPP)
     set(JWT_LIB_DIR "/usr/local/cpp-jwt")
     
     include_directories(${JWT_DIR_INC})   
-	#link_directories(${JWT_LIB_DIR})
-    
+	#link_directories(${JWT_LIB_DIR})	
 
-    ExternalProject_Add(ADD_${LIB_JWT}                
-            CONFIGURE_COMMAND ${CMAKE_COMMAND} . -DCPP_JWT_BUILD_TESTS=0
-            SOURCE_DIR ${THIRDPARTY_PATH}/cpp-jwt
-            BUILD_IN_SOURCE 1
-            BUILD_COMMAND make
-            INSTALL_COMMAND make  install
-            )
+   	ExternalProject_Add(ADD_jwt               
+        CONFIGURE_COMMAND ${CMAKE_COMMAND} . -DCPP_JWT_BUILD_TESTS=0
+        SOURCE_DIR ${THIRDPARTY_PATH}/cpp-jwt
+        BUILD_IN_SOURCE 1
+        BUILD_COMMAND make
+        INSTALL_COMMAND make  install
+        )
+   
 
 endif (JWT_CPP)
 
@@ -238,15 +248,21 @@ if (OPENSSL_CPP)
     
     include_directories(${OPENSSL_DIR_INC})   
 	link_directories(${OPENSSL_LIB_DIR})
-    
 
-    ExternalProject_Add(ADD_${LIB_OPENSSL}                
+	if (NOT EXISTS "${THIRDPARTY_PATH}/openssl/libcrypto.a" )
+
+	   ExternalProject_Add(ADD_openssl                
             CONFIGURE_COMMAND ./config
             SOURCE_DIR ${THIRDPARTY_PATH}/openssl
             BUILD_IN_SOURCE 1
             BUILD_COMMAND make
             INSTALL_COMMAND make  install
             )
+
+     endif()
+    
+
+    
 
 endif (OPENSSL_CPP)
 
