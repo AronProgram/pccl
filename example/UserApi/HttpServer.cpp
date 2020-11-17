@@ -15,9 +15,8 @@
  */
 
 #include "HttpServer.h"
-#include "ControllerImplement.h"
-#include "BaseController.h"
-#include "UserController.h"
+#include "HttpControllerImplement.h"
+#include "UserApi.h"
 #include <string>
 
 
@@ -37,7 +36,7 @@ void HttpServer::initialize()
 {
     //initialize application here:
     addServant< pccl::HttpControllerImplement<UserApi> >(ServerConfig::Application + "." + ServerConfig::ServerName + "." +_objName);
-    addServantProtocol(ServerConfig::Application + "." + ServerConfig::ServerName + "."  +  _objName,&BaseController::checkHttpPacket);
+    addServantProtocol(ServerConfig::Application + "." + ServerConfig::ServerName + "."  +  _objName,&pccl::BaseHttpController::checkHttpPacket);
 
 }
 

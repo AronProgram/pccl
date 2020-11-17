@@ -52,18 +52,15 @@ public:
 	*
 	* 清空环境
 	*/
-	virtual void reset();
-	
+	virtual void reset();	
 
+
+protected:
 	/**
 	*
 	* 初始化路由，统一处理处接口
 	*/ 
 	virtual void initRoute(void);
-
-
-
-protected:	
 
 	/**
 	*
@@ -73,21 +70,22 @@ protected:
 
 	
 	/**
-	*  处理入口
-	*/
-	virtual int entrance(void);
-	
-
-private:
-	/**
-	*   注册api handler 函数
+	*	注册api handler 函数
 	*  @parmams: sApi ，API名称
 	*  @params:  httpMethod, POST,GET,DELETE
 	*  @params:  handler,  BaseBpiHandler 
 	*  @params:  isAuth,   是否要鉴权
 	*
 	*/
-	void    regiterRoute(const std::string& sApi,BaseApiHandler* handler, int      method,  bool isAuth = false );
+	void	regiterRoute(const std::string& sApi,BaseApiHandler* handler, int	   method,	bool isAuth = false );
+
+	
+	/**
+	*  http协议路由处理总入口
+	*/
+	virtual int handle(void);
+	
+
 
 private:
 	/*

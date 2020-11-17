@@ -14,44 +14,59 @@
  * specific language governing permissions and limitations under the License.
  */
 
+#pragma once
+
+#include "BaseApiHandler.h"
+#include <string>
 
 
-#include "UserApi.h"
-#include "UserRegisterApiHandle.h"
-#include "UserLoginApiHandle.h"
+using namespace pccl;
 
-
-UserApi::UserApi(void)
+/**
+ *
+ *
+ */
+class UserRegisterApiHandle : public pccl::BaseApiHandler
 {
+
+
+public:
 	
-}
-
-
-UserApi::~UserApi()
-{
 	
-}
-
-
-void UserApi::reset()
-{
-	pccl::BaseHttpApiController::reset();
-}
-
-
-void UserApi::initRoute(void)
-{	
-	// user
-	regiterRoute("/api/user/register",  new UserRegisterApiHandle(), pccl::BaseHttpRoute::HTTP_REQUEST_GET             );
-	regiterRoute("/api/user/login",     new UserLoginApiHandle(),    pccl::BaseHttpRoute::HTTP_REQUEST_POST             );
+	/**
+	*
+	*  构造函数
+	*/
+	UserRegisterApiHandle(void);
 	
-}
+    /**
+     *
+     * 析构函数
+     */
+    virtual ~UserRegisterApiHandle();
 
-void UserApi::initErrorCode(void)
-{	
-		
-}
+	/**
+	*
+	* 重置
+	*/
+	virtual void reset();
 
+	
+	
+protected:
+	/**
+	*  检查参数
+	**/
+	virtual int  doCheckParams(void);
+	
 
+	/**
+	* 用户注册业务处理
+	**/
+	virtual int  doProcessWork(void);
 
+	
+
+	
+};
 

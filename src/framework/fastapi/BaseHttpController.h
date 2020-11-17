@@ -84,7 +84,7 @@ public:
 	*
 	* 初始化路由，绑定路由处理函数
 	*/ 
-	virtual void initRoute(void) ;	
+	virtual void initRoute(void)       =  0 ;	
 	
 
 

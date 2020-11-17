@@ -49,9 +49,11 @@ ELSE()
     set(CMAKE_INSTALL_PREFIX "c:\\pcll\\cpp" CACHE STRING "set install path" FORCE)
 ENDIF()
 
+set (PCCL_FRAMEWORK_API   "${CMAKE_SOURCE_DIR}/src/framework/fastapi"  "${CMAKE_SOURCE_DIR}/src/framework/common")
+set (PCCL_FRAMEWORK_PB    "${CMAKE_SOURCE_DIR}/src/framework/logicsvr" "${CMAKE_SOURCE_DIR}/src/framework/common")
 
 #################################################### 
-## JSON_CPP 
+##  
 ## 
 ####################################################
 IF (APPLE)
@@ -59,10 +61,12 @@ link_libraries(iconv)
 ENDIF(APPLE)
 
 IF (WIN32)
-
+   link_libraries(pthread dl)
 ELSE()
-    link_libraries(pthread dl)
+   #link_libraries(pthread dl)
 ENDIF()
+
+
 
 
 #################################################### 

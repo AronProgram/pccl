@@ -1,7 +1,11 @@
 
 
 
-
+####################################################
+## function 
+## pb文件生成cpp文件
+## 
+####################################################
 function (build_proto_files arg)
     #message(STATUS "ARGC: ${ARGC}")
     #message(STATUS "ARGV: ${ARGV}")

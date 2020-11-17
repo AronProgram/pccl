@@ -38,7 +38,7 @@ BaseErrorCode::~BaseErrorCode()
 void BaseErrorCode::initError()
 {
 	_error[ BaseErrorCode::METHOD_ERROR ]    = "method error";
-	_error[ BaseErrorCode::ROUTER_ERROR ]    = "router error";
+	_error[ BaseErrorCode::ROUTER_ERROR ]    = "route error";
 	_error[ BaseErrorCode::PARSE_ERROR ]     = "parse http packet error";
 	_error[ BaseErrorCode::PARAMS_ERROR ]    = "params error";
 	_error[ BaseErrorCode::AUTHOR_ERROR ]    = "auth error";

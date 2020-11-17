@@ -48,8 +48,8 @@ public:
 
 
 ///////////////////// 引用   /////////////////
-extern HttpServer      g_app;
-extern TC_Config*      g_pconf;
+extern HttpServer            g_app;
+extern tars::TC_Config*      g_pconf;
 
 
 

@@ -9,9 +9,10 @@ include_directories("."
 
 
 target_link_libraries(	pccl_fastapi 
-						#${jsoncpp_LIBRARIES} 
-						#${TARS_LIBRARIES} 
-						pthread  
+						${LIB_JSONCPP} 						
+						${LIB_FMT}
+						${LIB_TARS_CPP} 
+						pthread
 						)
 
 

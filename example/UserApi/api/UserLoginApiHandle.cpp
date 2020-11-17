@@ -14,44 +14,41 @@
  * specific language governing permissions and limitations under the License.
  */
 
-
-
-#include "UserApi.h"
-#include "UserRegisterApiHandle.h"
+ 
+ 
 #include "UserLoginApiHandle.h"
-
-
-UserApi::UserApi(void)
-{
-	
-}
-
-
-UserApi::~UserApi()
-{
-	
-}
-
-
-void UserApi::reset()
-{
-	pccl::BaseHttpApiController::reset();
-}
-
-
-void UserApi::initRoute(void)
-{	
-	// user
-	regiterRoute("/api/user/register",  new UserRegisterApiHandle(), pccl::BaseHttpRoute::HTTP_REQUEST_GET             );
-	regiterRoute("/api/user/login",     new UserLoginApiHandle(),    pccl::BaseHttpRoute::HTTP_REQUEST_POST             );
-	
-}
-
-void UserApi::initErrorCode(void)
-{	
-		
-}
+#include "BaseHttpPlus.h"
+#include <string>
+ 
+ 
+ UserLoginApiHandle::UserLoginApiHandle()
+ {
+ 
+ }
+ 
+ 
+ UserLoginApiHandle::~UserLoginApiHandle()
+ {
+ 
+ }
+ 
+ void UserLoginApiHandle::reset()
+ {
+	 pccl::BaseApiHandler::reset();
+ }
+ 
+ 
+ int  UserLoginApiHandle::doCheckParams(void)
+ {
+	 return pccl::STATE_SUCCESS;
+ }
+ 
+ int  UserLoginApiHandle::doProcessWork(void)
+ {
+	 return pccl::STATE_SUCCESS;
+ }
 
 
 
+ 
 

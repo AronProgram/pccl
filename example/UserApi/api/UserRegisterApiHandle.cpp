@@ -16,40 +16,37 @@
 
 
 
-#include "UserApi.h"
 #include "UserRegisterApiHandle.h"
-#include "UserLoginApiHandle.h"
+#include "BaseHttpPlus.h"
+#include <string>
 
 
-UserApi::UserApi(void)
+UserRegisterApiHandle::UserRegisterApiHandle()
 {
-	
+
 }
 
 
-UserApi::~UserApi()
+UserRegisterApiHandle::~UserRegisterApiHandle()
 {
-	
+
 }
 
-
-void UserApi::reset()
+void UserRegisterApiHandle::reset()
 {
-	pccl::BaseHttpApiController::reset();
+	pccl::BaseApiHandler::reset();
 }
 
 
-void UserApi::initRoute(void)
-{	
-	// user
-	regiterRoute("/api/user/register",  new UserRegisterApiHandle(), pccl::BaseHttpRoute::HTTP_REQUEST_GET             );
-	regiterRoute("/api/user/login",     new UserLoginApiHandle(),    pccl::BaseHttpRoute::HTTP_REQUEST_POST             );
-	
+int  UserRegisterApiHandle::doCheckParams(void)
+{
+	return pccl::STATE_SUCCESS;
 }
 
-void UserApi::initErrorCode(void)
-{	
-		
+
+int  UserRegisterApiHandle::doProcessWork(void)
+{
+	return pccl::STATE_SUCCESS;
 }
 
 

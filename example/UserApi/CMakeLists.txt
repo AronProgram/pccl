@@ -5,17 +5,13 @@ add_executable(UserApi ${GLOBAL_SOURCES})
 
 
 include_directories("./"  
-					"${CMAKE_SOURCE_DIR}/pccl" 
-					"${RapidJSON_INCLUDE_DIR}" 
-					"${FASTCGI_DIR}"
+					"./api"
+					"${PCCL_FRAMEWORK_API}"					
 					)
 
 
 target_link_libraries(UserApi 
-					pccl_utils 
-					pccl_fastcgi 
-					${TARS_LIBRARIES} 
-					pthread  
+					pccl_fastapi
 					)
 
 

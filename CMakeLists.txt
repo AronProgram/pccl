@@ -22,7 +22,6 @@ include("${PROJECT_SOURCE_DIR}/cmake/Thirdparty.cmake")
 ####################################################
 
 add_subdirectory(src)
-
-
+add_subdirectory(example)
 
 

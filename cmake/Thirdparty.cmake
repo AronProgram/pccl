@@ -75,7 +75,7 @@ if (TARS_CPP)
 
     set(TARS_CPP_DIR_INC "/usr/local/tars/cpp/include")
     set(TARS_CPP_LIB_DIR "/usr/local/tars/cpp/lib")
-    set(TARS_CPP_LIB "libtarsservant.a libtarsparse.a libtarsutil.a")
+    set(LIB_TARS_CPP "libtarsservant.a" "libtarsparse.a" "libtarsutil.a")
     include_directories(${TARS_CPP_DIR_INC})
     link_directories(${TARS_CPP_LIB_DIR})
 
@@ -105,7 +105,7 @@ if (JSON_CPP)
 
     set(JSONCPP_DIR_INC "/usr/local/include/json")
     set(JSONCPP_LIB_DIR "/usr/local/lib64")
-    set(JSONCPP_LIB "libjsoncpp_static.a")
+    set(LIB_JSONCPP "libjsoncpp_static.a")
     include_directories(${JSONCPP_DIR_INC})
     link_directories(${JSONCPP_LIB_DIR})
 
@@ -136,8 +136,6 @@ if (RANDOM_CPP)
 
     set(RANDOM_DIR_INC "/usr/local/include")
     include_directories(${RANDOM_DIR_INC})   
-
-    set(LIB_RANDOM "random")
 
     ExternalProject_Add(ADD_random                
             CONFIGURE_COMMAND ${CMAKE_COMMAND} . 

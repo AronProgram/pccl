@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include "BaseController.h"
+#include "BaseHttpApiController.h"
 #include <string>
 
 
@@ -50,7 +50,8 @@ public:
 	* 清空环境
 	*/
 	virtual void reset();
-	
+
+protected:
 
 	/**
 	*
@@ -58,23 +59,12 @@ public:
 	*/ 
 	virtual void initRoute(void);
 
-protected:
-	
+
+	/**
+	* 初始化错语码
+	*/
 	virtual void initErrorCode(void);
 	
-
-protected:	
-	
-	/**
-	* 用户注册
-	*/
-	int register(void);
-	
-
-	/**
-	* 用户登录
-	*/
-	int login(void);
 
 	
 
