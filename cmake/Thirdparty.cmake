@@ -32,33 +32,34 @@ IF(UNIX)
 	
     FIND_PACKAGE(ZLIB)
     IF(NOT ZLIB_FOUND)
-        SET(ERRORMSG "zlib library not found. Please install appropriate package, remove CMakeCache.txt and rerun cmake.")
-        IF(CMAKE_SYSTEM_NAME MATCHES "Linux")
-            SET(ERRORMSG ${ERRORMSG} "On Debian/Ubuntu, package name is zlib1g-dev(apt-get install  zlib1g-dev), on Redhat/Centos and derivates it is zlib-devel (yum install zlib-devel).")
-        ENDIF()
+        SET(ERRORMSG "zlib library not found. Please install appropriate package, remove CMakeCache.txt and rerun cmake.")        
         MESSAGE(FATAL_ERROR ${ERRORMSG})
+    ELSE(ZLIB_FOUND)
+		include_directories(${ZLIB_INCLUDE_DIRS})
     ENDIF()
     
-ENDIF(UNIX)
 
-
-IF(UNIX)
-	
     FIND_PACKAGE(CURL)
-    IF(CURL_FOUND)
-		 include_directories(${CURL_INCLUDE_DIRS})
+    IF(NOT CURL_FOUND)    
+		SET(ERRORMSG "curl library not found. Please install appropriate package, remove CMakeCache.txt and rerun cmake.")        
+        MESSAGE(FATAL_ERROR ${ERRORMSG})
+	ELSE(CURL_FOUND)
+		include_directories(${CURL_INCLUDE_DIRS})
     ENDIF()
 
 	FIND_PACKAGE(Protobuf REQUIRED)
-	IF(PROTOBUF_FOUND)
-	    message(STATUS "protobuf library found")
+	IF(NOT PROTOBUF_FOUND)
+	    SET(ERRORMSG "protobuf library not found. Please install appropriate package, remove CMakeCache.txt and rerun cmake.")        
+        MESSAGE(FATAL_ERROR ${ERRORMSG})
+	ELSE(PROTOBUF_FOUND)	
 	    INCLUDE_DIRECTORIES(${PROTOBUF_INCLUDE_DIRS})
 		INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
-	ELSE()
-	    message(FATAL_ERROR "protobuf library is needed but cant be found")
 	ENDIF()
+	
     
 ENDIF(UNIX)
+
+
 
 
 
@@ -76,6 +77,7 @@ if (TARS_CPP)
     set(TARS_CPP_DIR_INC "/usr/local/tars/cpp/include")
     set(TARS_CPP_LIB_DIR "/usr/local/tars/cpp/lib")
     set(LIB_TARS_CPP "libtarsservant.a" "libtarsparse.a" "libtarsutil.a")
+    
     include_directories(${TARS_CPP_DIR_INC})
     link_directories(${TARS_CPP_LIB_DIR})
 
@@ -104,12 +106,11 @@ endif (TARS_CPP)
 if (JSON_CPP)
 
     set(JSONCPP_DIR_INC "/usr/local/include/json")
-    set(JSONCPP_LIB_DIR "/usr/local/lib64")
-    set(LIB_JSONCPP "libjsoncpp_static.a")
+    
     include_directories(${JSONCPP_DIR_INC})
     link_directories(${JSONCPP_LIB_DIR})
 
-    set(LIB_JSONCPP "jsoncpp")
+    set(LIB_JSONCPP "${THIRDPARTY_PATH}/jsoncpp/lib/libjsoncpp_static.a")
 
     if (NOT EXISTS "${THIRDPARTY_PATH}/jsoncpp/lib/libjsoncpp_static.a" )
 	
@@ -159,9 +160,9 @@ if (FMT_CPP)
     set(FMT_DIR_INC "/usr/local/include")
     include_directories(${FMT_DIR_INC})   
 
-    set(LIB_FMT "fmt")
+    set(LIB_FMT "${THIRDPARTY_PATH}/fmt/libfmt.a")
 
-    if (NOT EXISTS "${THIRDPARTY_PATH}/fmt/libfmt.a" )
+    if (NOT EXISTS "${LIB_FMT}" )
 
 	    ExternalProject_Add(ADD_fmt               
 	            CONFIGURE_COMMAND ${CMAKE_COMMAND} . 
@@ -175,94 +176,7 @@ if (FMT_CPP)
 
 endif (FMT_CPP)
 
-#################################################### 
-## PROTOBUFF_CPP 
-## 
-####################################################
 
-if (PROTOBUFF_CPP)
-
-	set(LIB_PROTOBUFF "libprotobuf.a")
-    set(PROTOBUFF_DIR_INC "/usr/local/include")
-    set(PROTOBUFF_LIB_DIR "/usr/local/lib64")
-    
-    include_directories(${PROTOBUFF_DIR_INC})   
-	link_directories(${PROTOBUFF_LIB_DIR})
-
-
-    if (NOT EXISTS "${THIRDPARTY_PATH}/protobuf/libprotobuf.a" )
-
-	   ExternalProject_Add(ADD_protobuf                
-            CONFIGURE_COMMAND ${CMAKE_COMMAND} . -Dprotobuf_BUILD_TESTS=OFF
-            SOURCE_DIR ${THIRDPARTY_PATH}/protobuf/cmake
-            BUILD_IN_SOURCE 1
-            BUILD_COMMAND make
-            INSTALL_COMMAND make  install
-            )
-
-
-     endif()
-
-
-    
-endif (PROTOBUFF_CPP)
-
-
-
-#################################################### 
-## JWT_CPP 
-## 
-####################################################
-
-if (JWT_CPP)
-
-	set(LIB_JWT "libjwt.a")
-    set(JWT_DIR_INC "/usr/local/include")
-    set(JWT_LIB_DIR "/usr/local/cpp-jwt")
-    
-    include_directories(${JWT_DIR_INC})   
-	#link_directories(${JWT_LIB_DIR})	
-
-   	ExternalProject_Add(ADD_jwt               
-        CONFIGURE_COMMAND ${CMAKE_COMMAND} . -DCPP_JWT_BUILD_TESTS=0
-        SOURCE_DIR ${THIRDPARTY_PATH}/cpp-jwt
-        BUILD_IN_SOURCE 1
-        BUILD_COMMAND make
-        INSTALL_COMMAND make  install
-        )
-   
-
-endif (JWT_CPP)
-
-#################################################### 
-## OPENSSL_CPP 
-## 
-####################################################
-if (OPENSSL_CPP)
-
-	set(LIB_OPENSSL "libopenssl.a")
-    set(OPENSSL_DIR_INC "/usr/local/include")
-    set(OPENSSL_LIB_DIR "/usr/local/openssl")
-    
-    include_directories(${OPENSSL_DIR_INC})   
-	link_directories(${OPENSSL_LIB_DIR})
-
-	if (NOT EXISTS "${THIRDPARTY_PATH}/openssl/libcrypto.a" )
-
-	   ExternalProject_Add(ADD_openssl                
-            CONFIGURE_COMMAND ./config
-            SOURCE_DIR ${THIRDPARTY_PATH}/openssl
-            BUILD_IN_SOURCE 1
-            BUILD_COMMAND make
-            INSTALL_COMMAND make  install
-            )
-
-     endif()
-    
-
-    
-
-endif (OPENSSL_CPP)
 
 
 #################################################### 
@@ -270,13 +184,10 @@ endif (OPENSSL_CPP)
 ## 
 ####################################################
 message("----------------------------------------------------")
-message("TARS_CPP:                  ${TARS_CPP}")
-message("JSON_CPP:                  ${JSON_CPP}")
+message("TARS_CPP:                  ${TARS_CPP}  ${LIB_TARS_CPP}")
+message("JSON_CPP:                  ${JSON_CPP}  ${LIB_JSONCPP}")
 message("RANDOM_CPP:                ${RANDOM_CPP}")
-message("FMT_CPP:                   ${FMT_CPP}")
-message("PROTOBUFF_CPP:             ${PROTOBUFF_CPP}")
-message("JWT_CPP:                   ${JWT_CPP}")
-message("OPENSSL_CPP:               ${OPENSSL_CPP}")
+message("FMT_CPP:                   ${FMT_CPP} ${LIB_FMT} ")
 message("----------------------------------------------------")
 
 

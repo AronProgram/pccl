@@ -20,10 +20,10 @@
 #include "util/tc_http.h"
 #include "util/tc_network_buffer.h"
 #include "json.h"
-#include "BaseErrorCode.h"
 #include "BaseHttpRequestParams.h"
 #include "BaseHttpRoute.h"
 #include "BaseHttpProcess.h"
+#include "BaseApiResult.h"
 #include <map>
 #include <string>
 #include <vector>
@@ -37,7 +37,7 @@ namespace pccl
 
 
 
-class BaseHttpController : public BaseHttpProcess, public BaseHttpRoute, public BaseHttpRequestParams, public BaseErrorCode
+class BaseHttpController : public BaseHttpProcess, public BaseHttpRoute, public BaseHttpRequestParams, public BaseApiResult
 {
 
 public:
@@ -92,55 +92,7 @@ public:
      * 处理http路由请求
      * @return :  0 : success , 非0: error
      */
-     virtual int doProcess(void);
-
-
-	/**
-	*  返回成功的消息
-	* 
-	*/
-	void success( const std::string& data );
-	void success( int code = (int)BaseErrorCode::SUCCESS, const std::string& msg="success" );
-	void success( Json::Value& data, int code = (int)BaseErrorCode::SUCCESS, const std::string& msg="success" );
-
-
-	/*
-	*
-	* 返回失败的消息
-	*/
-	void error(int code=(int)BaseErrorCode::PARAMS_ERROR,const std::string& msg="error" );
-	void error(Json::Value& data,int code = (int)BaseErrorCode::PARAMS_ERROR,const std::string& msg="error");
-
-
-	/*
-	* 跳转
-	*/
-	void redirect(const std::string& sUrl);	
-	void redirect(const std::string& sUrl, const std::vector<std::string>& cookieHeader);
-	void redirect(const std::map<std::string,std::string>& httpHeader,const std::vector<std::string>& cookieHeader);
-	void auth(const std::string& sMsg);
-
-	
-
-
-protected:
-	
-	/**
-	* 设置返回信息
-	*
-	*/
-	void result( const std::string& data);
-	void result( Json::Value& data);
-	void result( Json::Value& data, int code, const std::string& msg);
-	void result(const std::map<std::string,std::string>& httpHeader,  int httpStutus, const std::string& about , const std::string& body );
-	void result(const std::map<std::string,std::string>& httpHeader,  const std::vector<std::string >& cookieHeader, int httpStutus, const std::string& about , const std::string& body	);
-
-	/** 
-	*  json反序列化
-	*
-	*/
-	std::string serialize(Json::Value& data ,int code,const std::string& msg);
-
+    virtual int doProcess(void);	
 
 
 

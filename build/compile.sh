@@ -19,7 +19,7 @@ function build()
 	cpuNumber=`grep -c 'processor' /proc/cpuinfo`;	
 	echo "cpu number:$cpuNumber";
 	
-	cmake3 .. ;
+	cmake .. ;
 	make -j $cpuNumber;
 }
 

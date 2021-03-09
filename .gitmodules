@@ -10,12 +10,3 @@
 [submodule "thirdparty/fmt"]
 	path = thirdparty/fmt
 	url = https://github.com/fmtlib/fmt.git
-[submodule "thirdparty/protobuf"]
-	path = thirdparty/protobuf
-	url = https://github.com/protocolbuffers/protobuf.git
-[submodule "thirdparty/openssl"]
-	path = thirdparty/openssl
-	url = https://github.com/openssl/openssl.git
-[submodule "thirdparty/cpp-jwt"]
-	path = thirdparty/cpp-jwt
-	url = https://github.com/arun11299/cpp-jwt.git

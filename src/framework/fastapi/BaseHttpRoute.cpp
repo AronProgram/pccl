@@ -64,7 +64,7 @@ void BaseHttpRoute::bindRoute(const std::string& sUrl,CALLBACK_FUNC target,int m
 	exec.method    = method;
 	exec.authorize = bAuthorize;
 	exec.call      = std::move(target);	
-	_route[sUrl] = exec;
+	_route[sUrl]   = exec;
 }
 
 
@@ -117,7 +117,8 @@ int  BaseHttpRoute::doRoute(const std::string& sUrl )
 	TLOGINFO("doRoute, exec url:" << sUrl << std::endl);
 
 	EXEC_PARAM& exec = _route[sUrl];
-	int result = exec.call();	
+	int result       = exec.call();	
+	
 	return result;
 	
 }

@@ -53,6 +53,14 @@ public:
      * 资源释放
      **/
     virtual void destroyApp();
+
+protected:
+	/**
+	*  新连接
+	**/
+	void 		onNewClient(tars::TC_EpollServer::Connection* conn);
+
+	
 	
 protected:
 	/*

@@ -48,14 +48,19 @@ void BaseHttpRequestParams::setBuffer(std::vector<char>* inBuffer, std::vector<c
 }
 
 
+
+std::vector<char>& BaseHttpRequestParams::getOutBuffer(void)
+{
+	return *_outBuffer;
+}
+
+
 void BaseHttpRequestParams::reset()
 {
 	_bodyType = HTTP_BODY_NOTHING;	
-	_queryParams.clear();	
 	_sequence.clear();
-	_doc.clear();
-	_account.clear();
-	
+	_params.clear();	
+	_doc.clear();	
 	tars::TC_HttpRequest::reset();
 	
 }
@@ -134,14 +139,16 @@ int BaseHttpRequestParams::parseJsonBody(void)
 {
 	// 解析body: json
 	std::string content = this->getContent();	
-	
-	Json::Reader jsonParse;
 
-	bool status = jsonParse.parse(content,_doc);
-	if ( status )
+	Json::CharReaderBuilder builder;
+    const std::unique_ptr<Json::CharReader> reader( builder.newCharReader() );
+	
+	JSONCPP_STRING  err;
+	bool status = reader->parse(content.c_str(), content.c_str() + content.length() , &_doc, &err);	
+    if ( status ) 
 	{
-		_bodyType = HTTP_BODY_JSON;
-	}	
+     	_bodyType = HTTP_BODY_JSON;
+    }	
 
 	return pccl::STATE_SUCCESS;
 	
@@ -152,27 +159,23 @@ void BaseHttpRequestParams::parseQueryHeader(void)
 {
 	std::string request = getRequest();
 		
-	std::vector<std::string> query = TC_Common::sepstr<std::string>(request,"&");
+	split(request);	
 
-	for( std::size_t i = 0; i < query.size(); i++ )
-	{
-		std::vector<std::string> params = TC_Common::sepstr<std::string>(query[i],"=");
-		if ( 2 == params.size() )
-		{
-			_queryParams[ params[0] ] = TC_Cgi::decodeURL(params[1]);
-		}
-		
-		_bodyType = HTTP_BODY_QUERY;
-	}
-
+	_bodyType = HTTP_BODY_QUERY;
 }
 
 void BaseHttpRequestParams::parseQueryBody(void)
 {
-
 	std::string content = this->getContent();	
 
-	std::vector<std::string> query = TC_Common::sepstr<std::string>(content,"&");
+	split(content);		
+}
+
+
+void    BaseHttpRequestParams::split(const std::string& sQuery)
+{
+
+	std::vector<std::string> query = tars::TC_Common::sepstr<std::string>(sQuery,"&");
 	
 	for( std::size_t i = 0; i < query.size(); i++ )
 	{	
@@ -181,15 +184,21 @@ void BaseHttpRequestParams::parseQueryBody(void)
 
 			params.clear();
 			
-			params = TC_Common::sepstr<std::string>(query[i],"=",true);
+			params = tars::TC_Common::sepstr<std::string>(query[i],"=",true);
 			if ( 2 == params.size() )
 			{
-				_queryParams[ params[0] ] = TC_Cgi::decodeURL(params[1]);
+				_params[ params[0] ] = tars::TC_Cgi::decodeURL(params[1]);
 			}
 		}
 	}
-	
-	
+
+}
+
+
+
+void	BaseHttpRequestParams::putParams(const std::string& sKey, const std::string& sValue )
+{
+	_params[ sKey ] =  sValue ;
 }
 
 
@@ -208,7 +217,7 @@ std::string BaseHttpRequestParams::getRemoteIp(void)
 	}
 	else
 	{
-		return "Nothing";
+		return "127.0.0.1";
 	}
 
 }
@@ -216,32 +225,20 @@ std::string BaseHttpRequestParams::getRemoteIp(void)
 
 void		BaseHttpRequestParams::dump(void)
 {
-	dumpQueryParams();
-	dumpAccount();
+	dumpParams();
 }
 
 
-void		BaseHttpRequestParams::dumpQueryParams(void)
-{	
+void		BaseHttpRequestParams::dumpParams(void)
+{		
 	
-	
-	TLOGDEBUG( "dumpParams, " << _sequence << ",header query string " << std::endl );
-	for( auto it = _queryParams.begin(); it != _queryParams.end(); it++ )
+	TLOGDEBUG( "dumpParams, " << _sequence << std::endl );
+	for( auto it = _params.begin(); it != _params.end(); it++ )
 	{
 		TLOGDEBUG( "dumpParams, " << _sequence << ", key:" <<it->first << ",value:" << it->second << std::endl);
 	}
 	
 	
-	}
-
-void	BaseHttpRequestParams::dumpAccount(void)
-{
-	TLOGDEBUG( "dumpAccount:" <<  std::endl );
-	for( auto it = _account.begin(); it != _account.end(); it++ )
-	{
-		TLOGDEBUG( "account, key:" << it->first << ",value:" << it->second << ",length:" << it->second.length() << std::endl);
-	}
-
 }
 
 

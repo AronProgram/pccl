@@ -38,7 +38,7 @@ BaseApiHandler::~BaseApiHandler(void)
 void BaseApiHandler::reset() 
 { 
 	_pBase = NULL;
-	BaseHttpResponse::reset();
+	BaseApiResult::reset();
 }
 
 
@@ -62,16 +62,20 @@ int BaseApiHandler::doProcessApi(void)
 
 	result = doCheckParams();
 	if ( pccl::STATE_SUCCESS != result )
-	{
+	{	
+		this->error((int)BaseErrorCode::PARAMS_ERROR);
 		return pccl::STATE_ERROR;
 	}
 	
 	result = doProcessWork();
 	if ( pccl::STATE_SUCCESS != result )
 	{
+		this->error((int)BaseErrorCode::SERVER_ERROR);
 		return pccl::STATE_ERROR;
 	}
 
+	
+	doProcessEnd();	
 
 	return result;
 	
@@ -90,6 +94,12 @@ int BaseApiHandler::doProcessWork(void)
 
 	return pccl::STATE_SUCCESS;	
 	
+}
+
+
+void BaseApiHandler::doProcessEnd(void)
+{
+	this->encode( _pBase->getOutBuffer() );
 }
 
 

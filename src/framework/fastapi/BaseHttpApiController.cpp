@@ -58,7 +58,7 @@ void BaseHttpApiController::initRoute(void)
 
 
 void   BaseHttpApiController::regiterRoute(const std::string& sApi,     BaseApiHandler* handler, int method, bool isAuth )
-{
+{	
 	this->bindRoute( sApi,  std::bind(&BaseHttpApiController::handle, this), method , isAuth );
 	_factory.bindRoute( sApi, handler );
 }
@@ -80,24 +80,9 @@ int BaseHttpApiController::handle(void)
 	pHandler->setSequence( this->getSequence() );
 
 	//逻辑处理
-	result = pHandler->doProcessApi();	
-	if ( pccl::STATE_SUCCESS != result )
-	{	
-		this->error(  pHandler->getResult(), pHandler->getErrMsg() );
-		return pccl::STATE_SUCCESS;
-	}
-
-	// 是否有302跳转
-	if ( pHandler->hasRedirect() )
-	{
-		this->redirect(  pHandler->getRedirect() );
-		return pccl::STATE_SUCCESS;
-	}
+	result = pHandler->doProcessApi();		
 	
-	// 返回数据
-	this->success( pHandler->getDoc() );
-	
-	return pccl::STATE_SUCCESS;	
+	return result;	
 }
 
 

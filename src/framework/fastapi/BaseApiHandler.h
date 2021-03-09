@@ -15,9 +15,8 @@
  */
 #pragma once
 
-
-#include "BaseHttpResponse.h"
 #include "BaseHttpController.h"
+#include "BaseApiResult.h"
 #include <iostream>
 #include <string>
 #include <map>
@@ -27,7 +26,7 @@ namespace pccl
 {
 
 
-class BaseApiHandler: public BaseHttpResponse
+class BaseApiHandler: public BaseApiResult
 {
 public:
 	/*
@@ -73,6 +72,12 @@ protected:
 	* 业务处理
 	**/
 	virtual int  doProcessWork(void);
+
+
+	/**
+	*	输出
+	*/
+	virtual void doProcessEnd(void);
 
 	
 	

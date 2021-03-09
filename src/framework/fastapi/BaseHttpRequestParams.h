@@ -29,7 +29,7 @@ namespace pccl
 
 class BaseHttpRequestParams: public tars::TC_HttpRequest
 {
-		typedef std::map<std::string,std::string> QUERY_PARAMS;
+		typedef std::map<std::string,std::string> PARAMS;
 		
 		enum BodyType
 		{	
@@ -61,6 +61,8 @@ public:
 	*
 	*/
 	void setBuffer(std::vector<char>* inBuffer, std::vector<char>* outBuffer);
+
+	std::vector<char>& getOutBuffer(void);
 
 	/*
 	*
@@ -94,15 +96,10 @@ public:
 	* 获取http请求的header/body的后面序列化后的参数列表,
 	* 
 	*/
-	QUERY_PARAMS&   getQueryParams(void) { return _queryParams; };
-	std::string&    getQueryParams(const std::string& sKey) { return _queryParams[sKey]; }
+	PARAMS&     		getParams(void) { return _params; };
+	std::string&    	getParams(const std::string& sKey) { return _params[sKey]; }
+	void                putParams(const std::string& sKey, const std::string& sValue );
 
-
-	/**
-	* 获取鉴权用户信息
-	*/
-	std::map<std::string,std::string>& getAccount(void) { return _account; }
-	std::string& getAccount(const std::string& sKey) { return _account[sKey]; }
 
 
 protected:
@@ -117,19 +114,15 @@ protected:
 
 
 private:
+	void       split(const std::string& sQuery);
 	void       dump(void);
 	
 	/*
 	* 打印参数
 	*/
-	void 		dumpQueryParams(void);
+	void 		dumpParams(void);
 
-
-	/**
-	* 
-	*/
-	void        dumpAccount(void);
-
+	
 private:
 
 
@@ -185,23 +178,17 @@ protected:
 	BodyType				_bodyType;   
 
 	/*
-	* http 协议header/body query string参数
+	* http参数：
+	* 1. http 协议header/body query string参数
+	* 2. 鉴权用户信息的参数（ 鉴权权可以写入进来）
 	*/
-	QUERY_PARAMS 			_queryParams;
+	PARAMS 					_params;
 
 	
 	/*
 	* http报文解析后json
 	*/
-	Json::Value						  _doc; 
-
-
-	/*
-	* 鉴权用户信息
-	*/
-	std::map<std::string,std::string> _account;
-
-
+	Json::Value				_doc; 
 	
 
 };

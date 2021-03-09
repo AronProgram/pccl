@@ -49,6 +49,12 @@ void BaseHttpServer::destroyApp()
     //...
 }
 
+
+void BaseHttpServer::onNewClient(tars::TC_EpollServer::Connection* conn)
+{
+    TLOGINFO( "New client from " << conn->getIp() << ":" << conn->getPort() << std::endl );
 }
 
+
+}
 

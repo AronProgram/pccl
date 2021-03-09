@@ -69,9 +69,9 @@ public:
 		{
 			_controller.reset();
 			_controller.setBuffer( (std::vector<char>*)&inBuffer,&outBuffer);
-			_controller.doProcess();
+			int result = _controller.doProcess();
 			
-			TLOGDEBUG( "[PCCL] FastApi response outBuffer size:" << outBuffer.size() << std::endl );
+			TLOGDEBUG( "[PCCL] FastApi result:" << result << ",response outBuffer size:" << outBuffer.size() << std::endl );
 		}
 		catch(exception &ex)
 		{

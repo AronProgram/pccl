@@ -45,6 +45,7 @@ public:
 		PARAMS_ERROR            = 110,		
 		AUTHOR_ERROR            = 403,
 		SERVER_ERROR            = 500,
+
 		
 		ERROR_MAX
 			
