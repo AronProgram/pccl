@@ -23,6 +23,8 @@
 
 using namespace tars;
 
+namespace pccl
+{
 
 
 /**
@@ -33,7 +35,17 @@ class BaseLogicRoute
 {
 
 public:
+	/** 
+	*	定义回调函数
+	*/	
 	typedef std::function<int(void)> CALLBACK_FUNC;	
+	
+	/** 
+	*	获取路由ID
+	* @ cmd : 模块标识
+	* @ scmd: 模块子命令
+	*/	
+	static std::string    getRouteId(int cmd, int scmd);
     
 
 public:
@@ -65,27 +77,20 @@ public:
 	* @ scmd: 模块子命令
 	* @ target 子模块处理函数
 	*/
-	void bindRoute(int cmd,int subcmd,CALLBACK_FUNC target) ;
+	void bindRoute(const std::string& sRouteId,CALLBACK_FUNC target) ;
 
 	/**
 	*
 	* 处理路由
 	*/
-	int  doRoute(int cmd,int scmd);
+	int  doRoute(const std::string& sRouteId);
 
 	/**
 	*
 	*  判断模块处理命令是否一致
 	*/
-	bool hasCmd(int cmd,int scmd);
+	bool hasRoute(const std::string& sRouteId);
 
-
-	/** 
-	*	获取路由ID
-	* @ cmd : 模块标识
-	* @ scmd: 模块子命令
-	*/	
-	std::string getRouteId(int cmd,int scmd);
 	
 private:
 	/*
@@ -96,12 +101,7 @@ private:
 		/**
 		* 模块标识
 		*/
-		int 			cmd;
-
-		/*
-		* 子模块命令
-		*/
-		int				scmd;
+		std::string     route;			
 
 		/*
 		* 回调函数
@@ -125,3 +125,5 @@ private:
 
 };
 
+
+}

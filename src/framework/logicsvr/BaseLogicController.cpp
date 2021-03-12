@@ -23,9 +23,11 @@
 #include <string>
 
 
+namespace pccl
+{
 
 
-BaseLogicController::BaseLogicController(void) 
+BaseLogicController::BaseLogicController(void):_status(false)
 {
 	
 }
@@ -71,125 +73,33 @@ tars::TC_NetWorkBuffer::PACKET_TYPE BaseLogicController::checkPacket(tars::TC_Ne
 
 }
 
-tars::TC_NetWorkBuffer::PACKET_TYPE BaseLogicController::checkIgnorePacket(tars::TC_NetWorkBuffer& in, std::vector<char>& out)
+tars::TC_NetWorkBuffer::PACKET_TYPE BaseLogicController::ignorePacket(tars::TC_NetWorkBuffer& in, std::vector<char>& out)
 {
 	return tars::TC_NetWorkBuffer::PACKET_ERR;
 }
 
 
 
-void BaseLogicController::clean()
+void BaseLogicController::reset()
 {
-	BaseLogicParams::clean();	
+	BaseLogicParams::reset();	
 }
 
 
 int BaseLogicController::initialization(void)
 {	
-	//设置路由
-	
-	
-	initRoute();		
+	//初始化路由
+	if ( !this->_status ) 
+	{
+		initRoute();			
+		this->_status = true;
+	}	 
 	
 	
 	//解析
-	int result = initParse();
+	int result = parse();
 	
 	return result;
-}
-
-void BaseLogicController::toJson(Json::Value& data, const std::string& msg, int result )
-{
-
-	std::vector<char>&       outBuffer = *_outBuffer;
-	Json::Value              doc;
-	
-	doc["code"]     = result;
-	doc["msg"]       = msg;
-	doc["data"]      = data;
-	doc["sequence"]  = getSequence();	
-	
-	std::string buffer = Json::FastWriter().write(doc);
-	outBuffer.resize( buffer.length() );
-    memcpy(&outBuffer[0], buffer.c_str(), buffer.length());
-
-}
-
-void BaseLogicController::toJsonSuccess(void)
-{	
-	Json::Value doc;
-	toJson(doc);
-}
-void BaseLogicController::toJsonError(void)
-{
-	Json::Value doc;
-	toJson(doc,"error",100);
-}
-
-void BaseLogicController::toBin(const std::string& data, int result )
-{
-	std::string msg = "success";
-
-	if ( result != 0 )
-	{
-		msg = "error";
-	}
-
-	toBin(data,msg, result);
-}
-
-void BaseLogicController::toBin(const std::string& data, const std::string& msg, int result   )
-{
-	ResponsePacketPb   packet;	
-	std::vector<char>& outBuffer = *_outBuffer;
-	
-	packet.set_version(PacketVersion::V1_VERSION);	
-	packet.set_result(result);
-	packet.set_msg(msg);
-	packet.set_sequence(this->getSequence());
-	packet.set_buffer(data);
-
-	std::string buffer =  packet.SerializeAsString();
-	outBuffer.resize( buffer.length() );
-    memcpy(&outBuffer[0], buffer.c_str(), buffer.length());
-
-	
-	TLOGDEBUG("response result:" << result << ",msg:" << msg <<",size:" << buffer.length() << std::endl );
-}
-
-
-
-void BaseLogicController::toBinSuccess(void)
-{
-	toBin("");
-}
-
-void BaseLogicController::toBinError(void  )
-{
-	toBin("","error",100);
-}
-
-
-void BaseLogicController::toStr(Json::Value& data, const std::string& msg, int result )
-{
-	std::string        str       = doc2Str(data);
-	toBin(str,msg,result);
-}
-
-
-void BaseLogicController::success(const std::string& data)
-{
-	toBin(data,"success",0);
-}
-void BaseLogicController::error(const std::string& msg,int result )
-{
-	std::string data;
-	toBin(data,msg,result);
-}
-
-std::string BaseLogicController::doc2Str(Json::Value& data)
-{	
-	return Json::FastWriter().write(data);
 }
 
 
@@ -206,13 +116,10 @@ int BaseLogicController::doProcess(void)
 
 	//todo
 	//限制策略: 频率，ip,黑名单
+	
 
 	// 处理路由
-	result = doProcessRoute();
-	if ( pccl::STATE_ERROR == result )
-	{	
-		return pccl::STATE_SUCCESS;
-	}
+	result = doProcessRoute();	
 
 	return result;
 	
@@ -225,8 +132,7 @@ int BaseLogicController::doProcessInit(void)
 	int result = initialization();
 	if ( pccl::STATE_SUCCESS != result )
 	{	
-		//todo 
-		this->error("params error");
+		this->error ( BaseLogicError::PARSE_ERROR );
 		return pccl::STATE_ERROR;
 	}	
 
@@ -237,18 +143,15 @@ int BaseLogicController::doProcessInit(void)
 
 
 int BaseLogicController::doProcessRoute(void)
-{
+{	
 
-	// 调用处理过程
-	int cmd    = this->getCmd();
-	int subcmd = this->getSubCmd();
+	std::string route = BaseLogicRoute::getRouteId( this->getCmd(), this->getSubCmd() );
 	
-	TLOGDEBUG("doProcess , sequence:" <<  this->getSequence() << ",cmd:" <<  cmd << ",subcmd:" << subcmd  << std::endl);
-	
+	TLOGDEBUG("doProcess , sequence:" <<  this->getSequence() << ",route:" <<  route  << std::endl );
 		
-	if (  !this->hasCmd(cmd,subcmd) )
+	if (  !this->hasRoute( route ) )
 	{
-		this->error("method error");		
+		this->error( BaseLogicError::ROUTER_ERROR );		
 		return pccl::STATE_ERROR;
 	}
 
@@ -257,19 +160,15 @@ int BaseLogicController::doProcessRoute(void)
 
 	
 	// 回调函数
-	int result = this->doRoute(cmd,subcmd);
-	if ( pccl::STATE_SUCCESS != result )
-	{
-		this->error("params error");		
-		return pccl::STATE_ERROR;
-	}
-
-	return pccl::STATE_SUCCESS;	
+	int result = this->doRoute(route);
+	
+	
+	return result;	
 	
 }
 
 
-
+}
 
 
 

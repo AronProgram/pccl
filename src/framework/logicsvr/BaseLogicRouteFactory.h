@@ -13,58 +13,83 @@
  * CONDITIONS OF ANY KIND, either express or implied. See the License for the 
  * specific language governing permissions and limitations under the License.
  */
+
 #pragma once
 
-
-#include <iostream>
-#include "servant/Application.h"
+#include "BaseLogicApiHandler.h"
 #include <string>
-
-using namespace tars;
+#include <map>
+#include <memory>
 
 
 namespace pccl
 {
 
 
-/**
- *
- **/
-class BaseLogicServer : public Application
+
+
+class BaseLogicRouteFactory
 {
 
 public:
-    /**
-     *
-     **/
-    BaseLogicServer(const std::string& objName);
+	BaseLogicRouteFactory() 
+	{ 	
+		
+	}
 	
-    /**
-     *
-     **/
-    virtual ~BaseLogicServer() {};
+	~BaseLogicRouteFactory()
+	{
+		
+	}
 
-    /**
-     *
-     **/
-	virtual void initialize();
+public:
+	BaseLogicApiHandler* createHandler(const   std::string& api)
+	{	
+		if ( _contain.count(api) > 0 )
+		{
+			return _contain[api].get();
+		}
 
-    /**
-     *
-     **/
-    virtual void destroyApp();
+		return NULL;
+		
+	}
+	
 
 protected:
-	/**
-	*  新连接
-	**/
-	void		onNewClient(tars::TC_EpollServer::Connection* conn);
-
+	std::map<std::string,std::unique_ptr<BaseLogicApiHandler> > _contain;	
 	
-protected:
-	std::string _objName;
 };
 
 
+
+class RegisterRouteHandlerFactory : public BaseLogicRouteFactory
+{
+
+public:
+	RegisterRouteHandlerFactory() 	
+	{ 
+		
+	}
+	
+	~RegisterRouteHandlerFactory() 
+	{
+		
+	}
+
+
+public:
+	
+	void bindRoute( const std::string& route, BaseLogicApiHandler* handler)
+	{	
+		std::unique_ptr<BaseLogicApiHandler> ptr(handler); 
+		_contain[route]   = std::move(ptr) ;
+	}
+	
+};
+
+
+
+
 }
+
 

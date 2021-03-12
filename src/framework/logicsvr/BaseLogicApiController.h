@@ -17,9 +17,9 @@
 #pragma once
 
 
-#include "BaseHttpController.h"
-#include "BaseHttpRouteFactory.h"
-#include "BaseApiHandler.h"
+#include "BaseLogicController.h"
+#include "BaseLogicRouteFactory.h"
+#include "BaseLogicApiHandler.h"
 #include <string>
 #include <memory>
 
@@ -29,7 +29,7 @@ namespace pccl
 {
 
 
-class BaseHttpApiController : public BaseHttpController
+class BaseLogicApiController : public BaseLogicController
 {
 
 
@@ -40,13 +40,13 @@ public:
 	*
 	*  构造函数
 	*/
-	BaseHttpApiController(void);
+	BaseLogicApiController(void);
 	
     /**
      *
      * 析构函数
      */
-    virtual ~BaseHttpApiController();
+    virtual ~BaseLogicApiController();
 
 	/**
 	*
@@ -77,13 +77,13 @@ protected:
 	*  @params:  isAuth,   是否要鉴权
 	*
 	*/
-	void	regiterRoute(const std::string& sApi,BaseApiHandler* handler, int	   method,	bool isAuth = false );
+	void	   regiterRoute(int cmd, int subCmd, BaseLogicApiHandler* handler  );
 
 	
 	/**
 	*  http协议路由处理总入口
 	*/
-	virtual int handle(void);
+	int 		handle(void);
 	
 
 

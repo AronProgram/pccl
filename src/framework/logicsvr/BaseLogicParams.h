@@ -27,6 +27,9 @@
 using namespace tars;
 
 
+namespace pccl
+{
+
 
 /**
  *
@@ -59,14 +62,9 @@ public:
 	*  清空变量
 	*
 	*/
-	virtual void clean();
-	
+	virtual void reset();	
 
-	/**
-	*
-	* 初始化
-	*/
-	int initParse(void);
+
 
 	RequestPacketPb&   getPackets(void);
 
@@ -75,6 +73,12 @@ public:
 	*  请求序列号,用于日志染色,追踪数据链条
 	*/
 	const std::string& getSequence(void);
+
+	/**
+	* 
+	* 获取路由ID
+	*/
+	const std::string&        getRoute();
 
 	/*
 	* 模识标识
@@ -106,7 +110,7 @@ public:
 	void 		dumpParams(void);
 
 
-private:
+protected:
 	/*
 	*
 	*  解析报文
@@ -129,10 +133,21 @@ protected:
 	std::vector<char>* 		_outBuffer;  
 	
 	/**
+	* 路由ID
+	*/
+
+	std::string             _route;
+	
+	/**
 	* 数据报文
 	*/
 	RequestPacketPb         _packtes;
 	
+	
 
 };
+
+
+
+}
 

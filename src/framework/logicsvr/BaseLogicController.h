@@ -21,18 +21,21 @@
 #include "BaseLogicRoute.h"
 #include "BaseLogicProcess.h"
 #include "BaseLogicParams.h"
+#include "BaseLogicResult.h"
 
 
 #include <map>
 #include <string>
 
+namespace pccl
+{
 
 
 /**
  *
  *
  */
-class BaseLogicController : public BaseLogicProcess, public BaseLogicRoute, public BaseLogicParams  
+class BaseLogicController : public BaseLogicProcess, public BaseLogicRoute, public BaseLogicParams,  public BaseLogicResult
 {
 public:
     /**
@@ -45,7 +48,7 @@ public:
      * 忽略解析报文：
      * @return :  1 : PACKET_FULL , -1: PACKET_ERR, 0: PACKET_LESS
      */
-	static tars::TC_NetWorkBuffer::PACKET_TYPE checkIgnorePacket(tars::TC_NetWorkBuffer& in, std::vector<char>& out);
+	static tars::TC_NetWorkBuffer::PACKET_TYPE ignorePacket(tars::TC_NetWorkBuffer& in, std::vector<char>& out);
 
 
 public:
@@ -67,7 +70,7 @@ public:
 	*  清空变量
 	*
 	*/
-	virtual void clean();
+	virtual void reset();
 
 	
 	/**
@@ -91,33 +94,7 @@ public:
      */
      virtual int doProcess(void);
 
-
-	 
-
-public:
-	/** 
-	* 设置返回信息: 纯Json数据
-	* 
-	*
-	*/	
-	void toJson(Json::Value& data, const std::string& msg = "success", int result = 0 );
-	void toJsonSuccess(void);
-	void toJsonError(void);
-	/**
-	* 设置返回信息: string数据打包
-	*
-	*/
-	void toBin(const std::string& data, const std::string& msg = "success", int result = 0  );
-	void toBin(const std::string& data, int result );
-	void toBinSuccess(void);
-	void toBinError(void);
-
-	/** 
-	* 设置返回信息: json数据打包
-	*
-	*/
-	void toStr(Json::Value& data, const std::string& msg = "success", int result = 0 );
-
+	
 
 protected:
 	
@@ -131,21 +108,16 @@ protected:
 	*/
 	int doProcessRoute(void);		
 
-	/*
-	*  Document 转成 string
-	*/
-	std::string doc2Str(Json::Value& data);
 
+private:
 	/**
-	* 设置成功返回消息
+	*  状态标志
 	*/
-	void success(const std::string& msg);
+	bool _status;
 
-
-	/*
-	* 设置错误返回消息
-	*/
-	void error(const std::string& msg, int result = 100);
 
 };
+
+
+}
 

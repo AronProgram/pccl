@@ -84,7 +84,14 @@ public:
 	*
 	* 初始化路由，绑定路由处理函数
 	*/ 
-	virtual void initRoute(void)       =  0 ;	
+	virtual void initRoute(void)          =  0 ;	
+	
+
+	/**
+	* 初始化错误码，统一错误码处理
+	*  
+	*/
+	virtual void initErrorCode(void)       =  0 ;	
 	
 
 
@@ -96,9 +103,7 @@ public:
 
 
 
-protected:
-
-	
+protected:	
 	
 	/** 
 	* 处理HTTP协议报文的处理
@@ -116,6 +121,10 @@ protected:
 	* reutrn int , 0：success ，返回200; 非0 ： 失败,返回403
 	*/
 	virtual int doProcessAuth(void);
+
+
+private:
+	bool 		_status;
 
 	
 };

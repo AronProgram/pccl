@@ -13,55 +13,78 @@
  * CONDITIONS OF ANY KIND, either express or implied. See the License for the 
  * specific language governing permissions and limitations under the License.
  */
-
 #pragma once
+
+#include "BaseLogicController.h"
+#include "BaseLogicResult.h"
+#include <iostream>
+#include <string>
+#include <map>
+
 
 namespace pccl
 {
 
-/**
- *
- *
- */
-class BaseLogicProcess
+
+class BaseLogicApiHandler: public BaseLogicResult
 {
-
-
 public:
-
-	/**
-	*
-	*  构造函数
+	/*
+	* 构造函数
 	*/
-	BaseLogicProcess(void) {}
-
+	BaseLogicApiHandler(void);
 	
     /**
-     *
      * 析构函数
-     */
-    virtual ~BaseLogicProcess(void) {}
+     **/
+    virtual ~BaseLogicApiHandler(void);
 
+
+	/**
+	* 重置
+	*/
+	virtual void reset() ;
 	
+	
+
+	void  setBasePointer(BaseLogicController* pBase);
+	
+
+	BaseLogicController&  getBasePointerRef();
+	
+	
+
 public:
 	/**
-	*
-	* 初始化
+	* 业务逻辑处理入口 
+	* 
 	*/
-	virtual int initialization(void) = 0;
+	virtual int  doProcessApi(void)    ;
 
-	
-	
+protected:
 	/**
-	*  处理流程
-	*
-	*/
-	virtual int doProcess(void)    = 0;
+	*  检查参数
+	**/
+	virtual int  doCheckParams(void);
 	
 
+	/**
+	* 业务处理
+	**/
+	virtual int  doProcessWork(void);
+
+
+	/**
+	*	输出
+	*/
+	virtual void doProcessEnd(void);
+
+	
+	
+protected:
+	BaseLogicController*  _pBase;
 
 };
-
 
 
 }

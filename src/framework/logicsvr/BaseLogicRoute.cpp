@@ -20,6 +20,16 @@
 #include "fmt/format.h"
 #include "BaseLogicPlus.h"
 
+namespace pccl
+{
+
+
+std::string BaseLogicRoute::getRouteId(int cmd,int scmd)
+{
+	std::string routeid = fmt::format("#{0}#{1}", cmd,scmd);
+	return routeid;
+}
+
 
 
 BaseLogicRoute::BaseLogicRoute()
@@ -36,64 +46,47 @@ BaseLogicRoute::~BaseLogicRoute()
 
 
 
-void BaseLogicRoute::bindRoute(int cmd,int subcmd, CALLBACK_FUNC target)
-{	
-	std::string  route = getRouteId(cmd,subcmd);
-	
-	if ( _route.count(route) )
+void BaseLogicRoute::bindRoute(const std::string& sRouteId, CALLBACK_FUNC target)
+{		
+	if ( _route.count(sRouteId) )
 	{	
+		TLOGERROR("bindRoute error,routeid:" << sRouteId << std::endl);
 		return;
 	}
 	
-	EXEC_PARAM exec;
+	EXEC_PARAM exec;	
+	exec.route       = sRouteId;
+	exec.call        = std::move(target);	
 	
-	exec.cmd      = cmd;
-	exec.scmd     = subcmd;
-	exec.call     = std::move(target);	
-	_route[route] = exec;
+	_route[sRouteId] = exec;
 }
 
 
-bool BaseLogicRoute::hasCmd(int cmd,int scmd)
+bool BaseLogicRoute::hasRoute(const std::string& sRouteId)
 {
-	std::string  route = getRouteId(cmd,scmd);
-
-	if ( !_route.count(route) )
+	if ( !_route.count(sRouteId) )
 	{	
-		TLOGERROR("doRoute error, not route:" << route << std::endl);
+		TLOGERROR("doRoute error, not route:" << sRouteId << std::endl);
 		return false;
-	}
-
-	EXEC_PARAM& exec = _route[route];
-
-	if ( cmd != exec.cmd || scmd != exec.scmd )
-	{
-		TLOGERROR("doRoute method error, exec route:" << route << std::endl);
-		return false;
-	}
+	}	
 	
 	return true;
 	
 }
 
 
-int  BaseLogicRoute::doRoute(int cmd,int scmd )
+int  BaseLogicRoute::doRoute(const std::string& sRouteId )
 {	
-	std::string  route = getRouteId(cmd,scmd);
 
-	TLOGINFO("doRoute, exec route:" << route << std::endl);
+	TLOGINFO("doRoute, exec route:" << sRouteId << std::endl);
 
-	EXEC_PARAM& exec = _route[route];
+	EXEC_PARAM& exec = _route[sRouteId];
 	int result       = exec.call();	
 	return result;
 	
 }
 
 
-std::string BaseLogicRoute::getRouteId(int cmd,int scmd)
-{
-	std::string routeid = fmt::format("#{0}#{1}", cmd,scmd);
-	return routeid;
-}
 
+}
 

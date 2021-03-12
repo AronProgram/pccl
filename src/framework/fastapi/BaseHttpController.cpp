@@ -27,15 +27,15 @@ namespace pccl
 {
 
 
-BaseHttpController::BaseHttpController(void) 
+BaseHttpController::BaseHttpController(void) : _status(false)
 {
-	initialization();
+	
 }
 
 
 BaseHttpController::~BaseHttpController()
 {
-
+	
 }
 
 
@@ -55,7 +55,10 @@ void BaseHttpController::reset()
 
 void BaseHttpController::initialization(void)
 {	
+	initErrorCode();
+	
 	initRoute();	
+	
 }
 
 
@@ -91,6 +94,13 @@ int BaseHttpController::doProcess(void)
 
 int BaseHttpController::doProcessParse(void)
 {
+	if ( !this->_status )
+	{
+		initialization();
+		
+		this->_status = true;
+	}
+
 	return  parse();
 }
 

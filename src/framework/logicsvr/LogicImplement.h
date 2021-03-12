@@ -24,6 +24,8 @@
 
 using namespace tars;
 
+namespace pccl
+{
 
 
 /**
@@ -68,9 +70,9 @@ public:
 		{
 			_controller.clean();
 			_controller.setBuffer( (std::vector<char>*)&inBuffer,&outBuffer);
-			_controller.doProcess();
+			int result = _controller.doProcess();
 			
-			TLOGDEBUG( "LogicSvr doRequest response outBuffer size:" << outBuffer.size() << std::endl );
+			TLOGDEBUG( "LogicSvr doRequest response outBuffer size:" << outBuffer.size() << ",result:" << result << std::endl );
 		}
 		catch(exception &ex)
 		{
@@ -93,5 +95,6 @@ private:
 };
 
 
+}
 
 

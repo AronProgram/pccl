@@ -23,6 +23,10 @@
 using namespace std;
 using namespace tars;
 
+namespace pccl
+{
+
+
 
 BaseLogicServer::BaseLogicServer(const std::string& objName):
 _objName(objName)
@@ -43,6 +47,15 @@ void BaseLogicServer::destroyApp()
 {
     //destroy application here:
     //...
+}
+
+
+
+void		BaseLogicServer::onNewClient(tars::TC_EpollServer::Connection* conn)
+{
+
+}
+
 }
 
 

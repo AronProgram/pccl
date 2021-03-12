@@ -39,7 +39,7 @@ BaseApiResult::~BaseApiResult()
 
 void BaseApiResult::reset()
 {	
-	_sequence = "";
+	_sequence.clear();
 	tars::TC_HttpResponse::reset();
 }
 

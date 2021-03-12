@@ -18,8 +18,13 @@
 
 #include "BaseLogicParams.h"
 #include "BaseLogicPlus.h"
+#include "BaseLogicRoute.h"
 #include "util/tc_common.h"
 #include <string>
+
+
+namespace pccl
+{
 
 
 BaseLogicParams::BaseLogicParams(void) 
@@ -41,15 +46,11 @@ void BaseLogicParams::setBuffer(std::vector<char>* inBuffer, std::vector<char>* 
 }
 
 
-void BaseLogicParams::clean()
+void BaseLogicParams::reset()
 {
+	_route.clear();
 	_packtes.Clear();
-}
-
-
-int BaseLogicParams::initParse(void)
-{		
-	return  parse();
+	
 }
 
 
@@ -63,6 +64,8 @@ int BaseLogicParams::parse(void)
 		TLOGERROR("parse request packet error" << std::endl);
 		return pccl::STATE_ERROR;
 	}
+
+	_route = BaseLogicRoute::getRouteId( getCmd(), getSubCmd() );
 
 	// debug
 	dumpParams();
@@ -79,6 +82,11 @@ RequestPacketPb&   BaseLogicParams::getPackets(void)
 const  std::string& BaseLogicParams::getSequence(void)
 {
 	return _packtes.sequence();	
+}
+
+const std::string& 	   BaseLogicParams::getRoute()
+{
+	return _route;
 }
 
 int 		BaseLogicParams::getCmd(void)
@@ -111,13 +119,12 @@ const std::map<std::string,std::string>& BaseLogicParams::getStatus(void)
 
 
 void 		BaseLogicParams::dumpParams(void)
-{	
-	std::string dump =  _packtes.DebugString();
-	
-	TLOGDEBUG("BaseLogicParams dumpParams:" << dump << std::endl);
+{		
+	TLOGDEBUG("BaseLogicParams routeId:" << _route << std::endl);
 }
 
 
+}
 
 
 

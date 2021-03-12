@@ -15,9 +15,9 @@
  */
 
 
-#include "BaseHttpApiController.h"
-#include "BaseApiHandler.h"
-#include "BaseHttpPlus.h"
+#include "BaseLogicApiController.h"
+#include "BaseLogicApiHandler.h"
+#include "BaseLogicPlus.h"
 
 
 
@@ -25,51 +25,51 @@ namespace pccl
 {
 
 
-BaseHttpApiController::BaseHttpApiController(void)
+BaseLogicApiController::BaseLogicApiController(void)
 {	
 	
 }
 
 
-BaseHttpApiController::~BaseHttpApiController()
+BaseLogicApiController::~BaseLogicApiController()
 {
 	
 }
 
 
-void BaseHttpApiController::reset()
+void BaseLogicApiController::reset()
 {
-	BaseHttpController::reset();
+	BaseLogicController::reset();
 }
 
 
-void BaseHttpApiController::initRoute(void) 
+void BaseLogicApiController::initRoute(void) 
 {	
 	//todo
 	//详细使用，请参考example目录下面的UserApi
 	//regiterRoute("/api/helloworld",  new BaseApiHandler(), 0, true );
 }
 
-void BaseHttpApiController::initErrorCode(void) 
+void BaseLogicApiController::initErrorCode(void) 
 {	
 
 }
 
-void   BaseHttpApiController::regiterRoute(const std::string& sApi,     BaseApiHandler* handler, int method, bool isAuth )
+void   BaseLogicApiController::regiterRoute(int cmd, int subCmd, BaseLogicApiHandler* handler  )
 {	
-	this->bindRoute( sApi,  std::bind(&BaseHttpApiController::handle, this), method , isAuth );
-	_factory.bindRoute( sApi, handler );
+	std::string route = BaseLogicRoute::getRouteId(cmd,subCmd);
+	this->bindRoute( route,  std::bind(&BaseLogicApiController::handle, this)  );
+	_factory.bindRoute( route, handler );
 }
 
 
-int BaseHttpApiController::handle(void)
+int BaseLogicApiController::handle(void)
 {
 
 	int result = pccl::STATE_SUCCESS;
 
 	//获取的api handler
-	std::string          reqUrl    =  this->getRequestUrl();
-	BaseApiHandler*      pHandler  = _factory.createHandler(reqUrl);
+	BaseLogicApiHandler* pHandler  = _factory.createHandler( this->getRoute() );
 	
 
 	//处理前准备
