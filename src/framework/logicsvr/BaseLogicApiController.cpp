@@ -58,8 +58,12 @@ void BaseLogicApiController::initErrorCode(void)
 void   BaseLogicApiController::regiterRoute(int cmd, int subCmd, BaseLogicApiHandler* handler  )
 {	
 	std::string route = BaseLogicRoute::getRouteId(cmd,subCmd);
+	
+	// API处理统一入口
 	this->bindRoute( route,  std::bind(&BaseLogicApiController::handle, this)  );
-	_factory.bindRoute( route, handler );
+	
+	// 每个API对应具体处理的Handler	
+	_factory.addApiHandle( route, handler );
 }
 
 

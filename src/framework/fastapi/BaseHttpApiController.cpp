@@ -57,10 +57,12 @@ void BaseHttpApiController::initErrorCode(void)
 
 void   BaseHttpApiController::regiterRoute(const std::string& sApi,     BaseApiHandler* handler, int method, bool isAuth )
 {	
+	// API处理统一入口
 	this->bindRoute( sApi,  std::bind(&BaseHttpApiController::handle, this), method , isAuth );
-	_factory.bindRoute( sApi, handler );
-}
 
+	// 每个API对应具体处理的ApiHandler
+	_factory.addApiHandle( sApi, handler );
+}
 
 int BaseHttpApiController::handle(void)
 {
@@ -68,8 +70,7 @@ int BaseHttpApiController::handle(void)
 	int result = pccl::STATE_SUCCESS;
 
 	//获取的api handler
-	std::string          reqUrl    =  this->getRequestUrl();
-	BaseApiHandler*      pHandler  = _factory.createHandler(reqUrl);
+	BaseApiHandler*      pHandler  = _factory.createHandler( this->getRoute() );
 	
 
 	//处理前准备

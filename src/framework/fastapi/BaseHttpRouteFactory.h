@@ -79,7 +79,7 @@ public:
 
 public:
 	
-	void bindRoute(const std::string& api, BaseApiHandler* handler)
+	void addApiHandle(const std::string& api, BaseApiHandler* handler)
 	{	
 		std::unique_ptr<BaseApiHandler> ptr(handler); 
 		_contain[api] = std::move(ptr) ;

@@ -79,7 +79,7 @@ public:
 
 public:
 	
-	void bindRoute( const std::string& route, BaseLogicApiHandler* handler)
+	void addApiHandle( const std::string& route, BaseLogicApiHandler* handler)
 	{	
 		std::unique_ptr<BaseLogicApiHandler> ptr(handler); 
 		_contain[route]   = std::move(ptr) ;

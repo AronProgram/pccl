@@ -59,6 +59,7 @@ void BaseHttpRequestParams::reset()
 {
 	_bodyType = HTTP_BODY_NOTHING;	
 	_sequence.clear();
+	_route.clear();
 	_params.clear();	
 	_doc.clear();	
 	tars::TC_HttpRequest::reset();
@@ -83,6 +84,9 @@ int BaseHttpRequestParams::parse(void)
 	// 构建染色ID，用于日志的数据链条的追踪
 	_sequence = BaseRandom::alpha(12);
 
+
+	// 获取HTTP路由
+	_route = this->getRequestUrl();
 
 	dump();
 
@@ -193,6 +197,13 @@ void    BaseHttpRequestParams::split(const std::string& sQuery)
 	}
 
 }
+
+
+const std::string& BaseHttpRequestParams::getRoute()
+{
+	return _route;
+}
+
 
 
 

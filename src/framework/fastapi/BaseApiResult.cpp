@@ -212,9 +212,9 @@ std::string BaseApiResult::serialize( Json::Value& data ,int code,const std::str
 	root["msg"]       = msg;
 	root["data"]      = data;
 	root["sequence"]  = _sequence;	
+
 	
-	Json::StreamWriterBuilder builder;
-    std::string jsonBuf = Json::writeString(builder, root);
+	std::string  jsonBuf= Json::FastWriter().write(root);
 
 	return jsonBuf;
 

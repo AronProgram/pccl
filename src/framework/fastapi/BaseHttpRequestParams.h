@@ -70,7 +70,6 @@ public:
 	*
 	*/
 	virtual void reset();
-	
 
 
 
@@ -91,6 +90,12 @@ public:
 	*  获取http body json数据参数
 	*/
 	Json::Value&    getJsonParams (void)     { return _doc; }
+
+	/*
+	*
+	*  获取路帱
+	*/
+	const std::string& getRoute();
 
 	/**
 	* 获取http请求的header/body的后面序列化后的参数列表,
@@ -170,6 +175,11 @@ protected:
 	* 序列号
 	*/
 	std::string             _sequence;
+
+	/*
+	* 路由
+	*/
+	std::string             _route;
 
 	
 	/*
