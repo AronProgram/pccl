@@ -38,6 +38,8 @@ void HttpServer::initialize()
     addServant< pccl::HttpControllerImplement<UserApi> >(ServerConfig::Application + "." + ServerConfig::ServerName + "." +_objName);
     addServantProtocol(ServerConfig::Application + "." + ServerConfig::ServerName + "."  +  _objName,&pccl::BaseHttpController::checkHttpPacket);
 
+	//new method
+	addAcceptCallback(std::bind(&HttpServer::onNewClient, this, std::placeholders::_1));
 }
 
 void HttpServer::destroyApp()

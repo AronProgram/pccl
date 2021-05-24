@@ -58,7 +58,7 @@ protected:
 	/**
 	*  新连接
 	**/
-	void 		onNewClient(tars::TC_EpollServer::Connection* conn);
+	virtual void 		onNewClient(tars::TC_EpollServer::Connection* conn);
 
 	
 	

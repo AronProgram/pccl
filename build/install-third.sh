@@ -23,16 +23,17 @@ function install_ubuntu()
 	wget https://github.com/AndyYoungDev/ubuntu-aliyun-sources/releases/download/shell/change.sh
 	chmod a+x change.sh
 	./change.sh
-	
-	sudo apt-get install libcurl4-openssl-dev 
-	sudo apt-get install zlib-dev
-	sudo apt-get install autoconf
-	sudo apt-get install automake
-	sudo apt-get install libtool
-	sudo apt-get install bison flex
 
+	apt-get install gcc
+	apt-get install build-essential
+	apt-get install libcurl4-openssl-dev 
+	apt-get install zlib1g zlib1g-dev
+	apt-get install autoconf
+	apt-get install automake
+	apt-get install libtool
+	apt-get install bison flex
+	apt-get install libprotobuf-dev protobuf-compiler
 
-	echo "please install protobuf, version >= 3.5.15 , github: https://github.com/protocolbuffers/protobuf.git";
 
 }
 
