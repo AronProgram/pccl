@@ -2,7 +2,7 @@
 ## INSTALL_PREFIX 
 ## 
 ####################################################
-set(PCCL_VERSION "0.1.0")
+set(PCCL_VERSION "0.1.1")
 add_definitions(-DPCCL_VERSION="${PCCL_VERSION}")
 
 set(CMAKE_VERBOSE_MAKEFILE on)
