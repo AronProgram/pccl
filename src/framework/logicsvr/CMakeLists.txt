@@ -19,8 +19,8 @@ include_directories("."
 
 
 target_link_libraries(	pccl_logicsvr 
-						#${TARS_LIBRARIES} 
-						${PROTOBUF_LIBRARIES}
+						${TARSCPP_LIBRARY} 
+						${PROTOBUF_LIBRARY}
 						pthread  
 						)
 
