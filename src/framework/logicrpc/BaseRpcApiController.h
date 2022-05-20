@@ -63,13 +63,19 @@ protected:
 	*
 	* 初始化路由，统一处理处接口
 	*/ 
-	virtual void initRoute(void) override;
+	virtual void initRoute(void) override
+	{
+	
+	}
 
 	/**
 	*
 	* 初始化错误码
 	*/	
-	virtual void initErrorCode(void);
+	virtual void initErrorCode(void) override
+	{
+		
+	}
 
 	
 	/**
