@@ -5,13 +5,11 @@
 
 set(THIRDPARTY_PATH "${PROJECT_SOURCE_DIR}/thirdparty")
 
-option(TARS_CPP         "option for TarsCpp"   ON)
-option(JSON_CPP         "option for jsoncpp"   ON)
-option(RANDOM_CPP       "option for random"    ON)
-option(FMT_CPP          "option for fmt"       ON)
-option(PROTOBUFF_CPP    "option for protobuff" ON)
-option(JWT_CPP          "option for jwt"       ON)
-option(OPENSSL_CPP      "option for openssl"   ON)
+option(TARSCPP          "option for TarsCpp"   ON)
+option(JSONCPP          "option for jsoncpp"   ON)
+option(RANDOM           "option for random"    ON)
+option(FMT              "option for fmt"       ON)
+
 
 #################################################### 
 ## definitions 
@@ -25,7 +23,8 @@ option(OPENSSL_CPP      "option for openssl"   ON)
 
 #################################################### 
 ## zlib/curl
-## 
+## apt install libcurl4-openssl-dev
+## apt install zip
 ####################################################
 
 IF(UNIX)
@@ -62,24 +61,22 @@ ENDIF(UNIX)
 
 
 
-
-
 #################################################### 
-## TARS_CPP 
+## TARSCPP 
 ## 
 ####################################################
 
 add_custom_target(thirdparty)
 include(ExternalProject)
 
-if (TARS_CPP)
+if (TARSCPP)
 
-    set(TARS_CPP_DIR_INC "/usr/local/tars/cpp/include")
-    set(TARS_CPP_LIB_DIR "/usr/local/tars/cpp/lib")
-    set(LIB_TARS_CPP "libtarsservant.a" "libtarsparse.a" "libtarsutil.a")
+    set(TARSCPP_INCLUDE_DIRS "/usr/local/tars/cpp/include")
+    set(TARSCPP_LIBRARY_DIRS "/usr/local/tars/cpp/lib") 
+    set(TARSCPP_LIBRARY      "/usr/local/tars/cpp/lib/libtarsservant.a" "/usr/local/tars/cpp/lib/libtarsparse.a" "/usr/local/tars/cpp/lib/libtarsutil.a")
     
-    include_directories(${TARS_CPP_DIR_INC})
-    link_directories(${TARS_CPP_LIB_DIR})
+    include_directories(${TARSCPP_INCLUDE_DIRS})
+    link_directories(${TARSCPP_LIBRARY_DIRS})
 
 
 	if (NOT EXISTS "${THIRDPARTY_PATH}/TarsCpp/lib/libtarsservant.a" )
@@ -95,27 +92,25 @@ if (TARS_CPP)
 	endif()
 
 
-
-endif (TARS_CPP)
+endif (TARSCPP)
 
 #################################################### 
-## JSON_CPP 
+## JSONCPP 
 ## 
 ####################################################
 
-if (JSON_CPP)
+if (JSONCPP)
 
-    set(JSONCPP_DIR_INC "/usr/local/include/json")
+    set(JSONCPP_INCLUDE_DIRS "/usr/local/include/json")
+    set(JSONCPP_LIBRARY      "/usr/local/lib/libjsoncpp.a" )
     
-    include_directories(${JSONCPP_DIR_INC})
-    link_directories(${JSONCPP_LIB_DIR})
+    include_directories(${JSONCPP_INCLUDE_DIRS})
 
-    set(LIB_JSONCPP "${THIRDPARTY_PATH}/jsoncpp/lib/libjsoncpp_static.a")
 
-    if (NOT EXISTS "${THIRDPARTY_PATH}/jsoncpp/lib/libjsoncpp_static.a" )
+    if (NOT EXISTS "${THIRDPARTY_PATH}/jsoncpp-Sandbox/jsoncpp/jsoncpp-build/lib/libjsoncpp.a" )
 	
  		ExternalProject_Add(ADD_jsoncpp                
-            CONFIGURE_COMMAND ${CMAKE_COMMAND} . 
+            CONFIGURE_COMMAND cd jsoncpp-build && ${CMAKE_COMMAND} . 
             SOURCE_DIR ${THIRDPARTY_PATH}/jsoncpp
             BUILD_IN_SOURCE 1
             BUILD_COMMAND make
@@ -125,18 +120,21 @@ if (JSON_CPP)
 	endif()
 
    
-endif (JSON_CPP)
+endif (JSONCPP)
 
 
 #################################################### 
-## RANDOM_CPP 
+## RANDOM 
 ## 
 ####################################################
 
-if (RANDOM_CPP)
+if (RANDOM)
 
-    set(RANDOM_DIR_INC "/usr/local/include")
-    include_directories(${RANDOM_DIR_INC})   
+    set(RANDOM_INCLUDE_DIRS "/usr/local/include")
+    set(RANDOM_LIBRARY      "/usr/local/lib/librandom.a" )
+    
+    include_directories(${RANDOM_INCLUDE_DIRS})   
+
 
     ExternalProject_Add(ADD_random                
             CONFIGURE_COMMAND ${CMAKE_COMMAND} . 
@@ -146,23 +144,23 @@ if (RANDOM_CPP)
             INSTALL_COMMAND make  install
             )
 
-endif (RANDOM_CPP)
+endif (RANDOM)
 
 
 
 #################################################### 
-## RANDOM_CPP 
+## FMT 
 ## 
 ####################################################
 
-if (FMT_CPP)
+if (FMT)
 
-    set(FMT_DIR_INC "/usr/local/include")
-    include_directories(${FMT_DIR_INC})   
+    set(FMT_INCLUDE_DIRS "/usr/local/include")
+    set(FMT_LIBRARY      "/usr/local/lib/libfmt.a" )
+    
+    include_directories(${FMT_INCLUDE_DIRS})   
 
-    set(LIB_FMT "${THIRDPARTY_PATH}/fmt/libfmt.a")
-
-    if (NOT EXISTS "${LIB_FMT}" )
+    if (NOT EXISTS "${THIRDPARTY_PATH}/fmt/libfmt.a" )
 
 	    ExternalProject_Add(ADD_fmt               
 	            CONFIGURE_COMMAND ${CMAKE_COMMAND} . 
@@ -174,7 +172,7 @@ if (FMT_CPP)
 
      endif()
 
-endif (FMT_CPP)
+endif (FMT)
 
 
 
@@ -189,5 +187,34 @@ message("JSON_CPP:                  ${JSON_CPP}  ${LIB_JSONCPP}")
 message("RANDOM_CPP:                ${RANDOM_CPP}")
 message("FMT_CPP:                   ${FMT_CPP} ${LIB_FMT} ")
 message("----------------------------------------------------")
+message("ZLIB:                        zlib ")
+message("ZLIB_INCLUDE_DIRS:           ${ZLIB_INCLUDE_DIRS} ")
+message("ZLIB_LIBRARY:                ${ZLIB_LIBRARY} ")
+message("----------------------------------------------------")
+message("CURL:                        curl ")
+message("CURL_INCLUDE_DIRS:           ${CURL_INCLUDE_DIRS} ")
+message("CURL_LIBRARY:                ${CURL_LIBRARY} ")
+message("----------------------------------------------------")
+message("PROTOBUF:                     protobuff ")
+message("PROTOBUF_INCLUDE_DIRS:        ${PROTOBUF_INCLUDE_DIRS}")
+message("PROTOBUF_LIBRARY:             ${PROTOBUF_LIBRARY}")
+message("----------------------------------------------------")
+message("TARSCPP:                     TarsCpp ")
+message("TARSCPP_INCLUDE_DIRS:        ${TARSCPP_INCLUDE_DIRS}")
+message("TARSCPP_LIBRARY:             ${TARSCPP_LIBRARY}")
+message("----------------------------------------------------")
+message("JSONCPP:                     jsoncpp ")
+message("JSONCPP_INCLUDE_DIRS:        ${JSONCPP_INCLUDE_DIRS}")
+message("JSONCPP_LIBRARY:             ${JSONCPP_LIBRARY}")
+message("----------------------------------------------------")
+message("RANDOM:                      random ")
+message("RANDOM_INCLUDE_DIRS:        ${RANDOM_INCLUDE_DIRS}")
+message("RANDOM_LIBRARY:             ${RANDOM_LIBRARY}")
+message("----------------------------------------------------")
+message("FMT:                        fmt ")
+message("FMT_INCLUDE_DIRS:           ${FMT_INCLUDE_DIRS}")
+message("FMT_LIBRARY:                ${FMT_LIBRARY}")
+message("----------------------------------------------------")
+
 
 
