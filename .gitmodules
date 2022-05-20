@@ -1,0 +1,4 @@
+[submodule "thirdparty"]
+	path = thirdparty
+	url = https://github.com/AronProgram/thirdparty.git
+	branch = master
