@@ -14,55 +14,60 @@
  * specific language governing permissions and limitations under the License.
  */
 
+#pragma once
 
-#include "BaseRpcHttpPacket.h"
+#include "BaseRpcApiHandler.h"
+#include "RpcConfig.h"
+#include <string>
 
 
+using namespace pccl;
 
-namespace pccl
+/**
+ *
+ *
+ */
+class UserRegisterApiHandle : public pccl::BaseRpcApiHandler<RPC_PACKET>
 {
 
 
+public:
+	
+	
+	/**
+	*
+	*  构造函数
+	*/
+	UserRegisterApiHandle(void);
+	
+    /**
+     *
+     * 析构函数
+     */
+    virtual ~UserRegisterApiHandle();
 
-BaseRpcHttpPacket::BaseRpcHttpPacket()
-{
-
-}
-
-
-BaseRpcHttpPacket::~BaseRpcHttpPacket()
-{
-
-}
-
-
-
-int BaseRpcHttpPacket::parse()
-{	
+	/**
+	*
+	* 重置
+	*/
+	virtual void reset();
 
 	
-	return pccl::STATE_SUCCESS;
-}
+	
+protected:
+	/**
+	*  检查参数
+	**/
+	virtual int  doCheckParams(void);
+	
 
-std::string&			BaseRpcHttpPacket::getRoute(void)	  
-{
-	return _route;
-}
+	/**
+	* 用户注册业务处理
+	**/
+	virtual int  doProcessWork(void);
 
-REQUEST_PARAMS& 		BaseRpcHttpPacket::getParams(void)    
-{
-	return _params;
-}
+	
 
-
-
-}
-
-
-
-
-
-
-
-
+	
+};
 

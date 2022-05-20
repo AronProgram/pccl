@@ -61,6 +61,7 @@ void BaseRpcRoute::bindRoute(const std::string& sUrl,CALLBACK_FUNC target,RpcRou
 	}
 	
 	EXEC_PARAM exec;
+
 	
 	exec.method    = method;
 	exec.authorize = bAuthorize;

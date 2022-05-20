@@ -14,55 +14,39 @@
  * specific language governing permissions and limitations under the License.
  */
 
+#include "HttpServer.h"
+#include "RpcControllerImplement.h"
+#include "HelloApi.h"
+#include <string>
 
-#include "BaseRpcHttpPacket.h"
+
+using namespace std;
+using namespace tars;
 
 
 
-namespace pccl
+
+HttpServer::HttpServer(void):pccl::BaseRpcServer("HelloApiObj")
 {
-
-
-
-BaseRpcHttpPacket::BaseRpcHttpPacket()
-{
-
-}
-
-
-BaseRpcHttpPacket::~BaseRpcHttpPacket()
-{
-
-}
-
-
-
-int BaseRpcHttpPacket::parse()
-{	
-
 	
-	return pccl::STATE_SUCCESS;
+	
 }
 
-std::string&			BaseRpcHttpPacket::getRoute(void)	  
+void HttpServer::initialize()
 {
-	return _route;
+    //initialize application here:
+    addServant< pccl::RpcControllerImplement<HelloApi> >(ServerConfig::Application + "." + ServerConfig::ServerName + "." +_objName);
+    //addServantProtocol(ServerConfig::Application + "." + ServerConfig::ServerName + "."  +  _objName,&pccl::BaseRpcController::checkRpcPacket);
+
+	//new method
+	addAcceptCallback(std::bind(&HttpServer::onNewClient, this, std::placeholders::_1));
 }
 
-REQUEST_PARAMS& 		BaseRpcHttpPacket::getParams(void)    
+void HttpServer::destroyApp()
 {
-	return _params;
+    //destroy application here:
+    //...
 }
-
-
-
-}
-
-
-
-
-
-
 
 
 

@@ -14,55 +14,41 @@
  * specific language governing permissions and limitations under the License.
  */
 
-
-#include "BaseRpcHttpPacket.h"
-
-
-
-namespace pccl
-{
-
-
-
-BaseRpcHttpPacket::BaseRpcHttpPacket()
-{
-
-}
-
-
-BaseRpcHttpPacket::~BaseRpcHttpPacket()
-{
-
-}
-
-
-
-int BaseRpcHttpPacket::parse()
-{	
-
-	
-	return pccl::STATE_SUCCESS;
-}
-
-std::string&			BaseRpcHttpPacket::getRoute(void)	  
-{
-	return _route;
-}
-
-REQUEST_PARAMS& 		BaseRpcHttpPacket::getParams(void)    
-{
-	return _params;
-}
+ 
+ 
+#include "UserLoginApiHandle.h"
+#include "BaseRpcPlus.h"
+#include <string>
+ 
+ 
+ UserLoginApiHandle::UserLoginApiHandle()
+ {
+ 
+ }
+ 
+ 
+ UserLoginApiHandle::~UserLoginApiHandle()
+ {
+ 
+ }
+ 
+ void UserLoginApiHandle::reset()
+ {
+	 pccl::BaseRpcApiHandler<RPC_PACKET>::reset();
+ }
+ 
+ 
+ int  UserLoginApiHandle::doCheckParams(void)
+ {
+	 return pccl::STATE_SUCCESS;
+ }
+ 
+ int  UserLoginApiHandle::doProcessWork(void)
+ {
+	 return pccl::STATE_SUCCESS;
+ }
 
 
 
-}
-
-
-
-
-
-
-
-
+ 
 

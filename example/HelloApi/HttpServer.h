@@ -13,53 +13,43 @@
  * CONDITIONS OF ANY KIND, either express or implied. See the License for the 
  * specific language governing permissions and limitations under the License.
  */
+#pragma once
 
 
-#include "BaseRpcHttpPacket.h"
+#include "BaseRpcServer.h"
 
-
-
-namespace pccl
+/**
+ *
+ **/
+class HttpServer : public pccl::BaseRpcServer
 {
-
-
-
-BaseRpcHttpPacket::BaseRpcHttpPacket()
-{
-
-}
-
-
-BaseRpcHttpPacket::~BaseRpcHttpPacket()
-{
-
-}
-
-
-
-int BaseRpcHttpPacket::parse()
-{	
-
+public:
+	/*
+	* 构造函数
+	*/
+	HttpServer(void);
 	
-	return pccl::STATE_SUCCESS;
-}
+    /**
+     *
+     **/
+    virtual ~HttpServer(void) {};
 
-std::string&			BaseRpcHttpPacket::getRoute(void)	  
-{
-	return _route;
-}
+    /**
+     *
+     **/
+	virtual void initialize();
 
-REQUEST_PARAMS& 		BaseRpcHttpPacket::getParams(void)    
-{
-	return _params;
-}
-
-
-
-}
+    /**
+     *
+     **/
+    virtual void destroyApp();
+	
+};
 
 
-
+///////////////////// 引用   /////////////////
+extern HttpServer            g_app;
+extern tars::TC_Config*      g_pconf;
 
 
 

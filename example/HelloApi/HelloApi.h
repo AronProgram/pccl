@@ -14,55 +14,61 @@
  * specific language governing permissions and limitations under the License.
  */
 
+#pragma once
 
-#include "BaseRpcHttpPacket.h"
+#include "BaseRpcApiController.h"
+#include "RpcConfig.h"
+#include <string>
 
 
+using namespace pccl;
 
-namespace pccl
+/**
+ *
+ *
+ */
+class HelloApi : public pccl::BaseRpcApiController<RPC_PACKET>
 {
 
 
+public:
+	
+	
+	/**
+	*
+	*  构造函数
+	*/
+	HelloApi(void);
+	
+    /**
+     *
+     * 析构函数
+     */
+    virtual ~HelloApi();
 
-BaseRpcHttpPacket::BaseRpcHttpPacket()
-{
+	/**
+	*
+	* 清空环境
+	*/
+	virtual void reset();
 
-}
+protected:
+
+	/**
+	*
+	* 初始化路由，绑定路由处理函数
+	*/ 
+	virtual void initRoute(void);
 
 
-BaseRpcHttpPacket::~BaseRpcHttpPacket()
-{
-
-}
-
-
-
-int BaseRpcHttpPacket::parse()
-{	
+	/**
+	* 初始化错语码
+	*/
+	virtual void initErrorCode(void);
+	
 
 	
-	return pccl::STATE_SUCCESS;
-}
 
-std::string&			BaseRpcHttpPacket::getRoute(void)	  
-{
-	return _route;
-}
-
-REQUEST_PARAMS& 		BaseRpcHttpPacket::getParams(void)    
-{
-	return _params;
-}
-
-
-
-}
-
-
-
-
-
-
-
-
+	
+};
 

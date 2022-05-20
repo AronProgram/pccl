@@ -15,53 +15,42 @@
  */
 
 
-#include "BaseRpcHttpPacket.h"
+
+#include "HelloApi.h"
+#include "UserRegisterApiHandle.h"
+#include "UserLoginApiHandle.h"
 
 
-
-namespace pccl
+HelloApi::HelloApi(void)
 {
-
-
-
-BaseRpcHttpPacket::BaseRpcHttpPacket()
-{
-
-}
-
-
-BaseRpcHttpPacket::~BaseRpcHttpPacket()
-{
-
-}
-
-
-
-int BaseRpcHttpPacket::parse()
-{	
-
 	
-	return pccl::STATE_SUCCESS;
 }
 
-std::string&			BaseRpcHttpPacket::getRoute(void)	  
+
+HelloApi::~HelloApi()
 {
-	return _route;
+	
 }
 
-REQUEST_PARAMS& 		BaseRpcHttpPacket::getParams(void)    
+
+void HelloApi::reset()
 {
-	return _params;
+	pccl::BaseRpcApiController<RPC_PACKET>::reset();
 }
 
 
-
+void HelloApi::initRoute(void)
+{	
+	// user
+	regiterRoute("/api/hello/get",      new UserRegisterApiHandle(), pccl::BaseRpcRoute::HTTP_REQUEST_GET             );
+	regiterRoute("/api/hello/post",     new UserLoginApiHandle(),    pccl::BaseRpcRoute::HTTP_REQUEST_POST             );
+	
 }
 
-
-
-
-
+void HelloApi::initErrorCode(void)
+{	
+		
+}
 
 
 

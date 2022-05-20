@@ -13,56 +13,14 @@
  * CONDITIONS OF ANY KIND, either express or implied. See the License for the 
  * specific language governing permissions and limitations under the License.
  */
-
-
-#include "BaseRpcHttpPacket.h"
-
-
-
-namespace pccl
-{
-
-
-
-BaseRpcHttpPacket::BaseRpcHttpPacket()
-{
-
-}
-
-
-BaseRpcHttpPacket::~BaseRpcHttpPacket()
-{
-
-}
-
-
-
-int BaseRpcHttpPacket::parse()
-{	
-
+ 
+#pragma once
 	
-	return pccl::STATE_SUCCESS;
-}
-
-std::string&			BaseRpcHttpPacket::getRoute(void)	  
-{
-	return _route;
-}
-
-REQUEST_PARAMS& 		BaseRpcHttpPacket::getParams(void)    
-{
-	return _params;
-}
-
-
-
-}
-
-
-
-
-
-
+#include "BaseRpcPlus.h"
+#include "BaseRpcHttpPacket.h"
+	
+	
+typedef pccl::BaseRpcHttpPacket   RPC_PACKET;
 
 
 

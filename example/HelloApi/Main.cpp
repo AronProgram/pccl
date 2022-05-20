@@ -14,55 +14,37 @@
  * specific language governing permissions and limitations under the License.
  */
 
+#include "HttpServer.h"
+#include <string>
 
-#include "BaseRpcHttpPacket.h"
 
+using namespace std;
+using namespace tars;
 
+/*
+* 全局变量：1: server 2: config
+*/
+HttpServer      g_app;
+TC_Config*      g_pconf;
 
-namespace pccl
+/////////////////////////////////////////////////////////////////
+int main(int argc, char* argv[])
 {
-
-
-
-BaseRpcHttpPacket::BaseRpcHttpPacket()
-{
-
+    try
+    {
+        g_pconf = &g_app.getConfig();
+        g_app.main(argc, argv);
+        g_app.waitForShutdown();
+    }
+    catch (std::exception& e)
+    {
+        std::cerr << "std::exception:" << e.what() << std::endl;
+    }
+    catch (...)
+    {
+        std::cerr << "unknown exception." << std::endl;
+    }
+    return -1;
 }
-
-
-BaseRpcHttpPacket::~BaseRpcHttpPacket()
-{
-
-}
-
-
-
-int BaseRpcHttpPacket::parse()
-{	
-
-	
-	return pccl::STATE_SUCCESS;
-}
-
-std::string&			BaseRpcHttpPacket::getRoute(void)	  
-{
-	return _route;
-}
-
-REQUEST_PARAMS& 		BaseRpcHttpPacket::getParams(void)    
-{
-	return _params;
-}
-
-
-
-}
-
-
-
-
-
-
-
-
+/////////////////////////////////////////////////////////////////
 

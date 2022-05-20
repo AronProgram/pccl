@@ -51,7 +51,7 @@ ENDIF()
 
 set (PCCL_FRAMEWORK_API   "${CMAKE_SOURCE_DIR}/src/framework/fastapi"  "${CMAKE_SOURCE_DIR}/src/framework/common")
 set (PCCL_FRAMEWORK_PB    "${CMAKE_SOURCE_DIR}/src/framework/logicsvr" "${CMAKE_SOURCE_DIR}/src/framework/common")
-
+set (PCCL_FRAMEWORK_RPC   "${CMAKE_SOURCE_DIR}/src/framework/logicrpc")
 #################################################### 
 ##  
 ## 

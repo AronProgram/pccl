@@ -15,53 +15,39 @@
  */
 
 
-#include "BaseRpcHttpPacket.h"
+
+#include "UserRegisterApiHandle.h"
+#include "BaseRpcPlus.h"
+#include <string>
 
 
-
-namespace pccl
-{
-
-
-
-BaseRpcHttpPacket::BaseRpcHttpPacket()
+UserRegisterApiHandle::UserRegisterApiHandle()
 {
 
 }
 
 
-BaseRpcHttpPacket::~BaseRpcHttpPacket()
+UserRegisterApiHandle::~UserRegisterApiHandle()
 {
 
 }
 
+void UserRegisterApiHandle::reset()
+{
+	pccl::BaseRpcApiHandler<RPC_PACKET>::reset();
+}
 
 
-int BaseRpcHttpPacket::parse()
-{	
-
-	
+int  UserRegisterApiHandle::doCheckParams(void)
+{
 	return pccl::STATE_SUCCESS;
 }
 
-std::string&			BaseRpcHttpPacket::getRoute(void)	  
+
+int  UserRegisterApiHandle::doProcessWork(void)
 {
-	return _route;
+	return pccl::STATE_SUCCESS;
 }
-
-REQUEST_PARAMS& 		BaseRpcHttpPacket::getParams(void)    
-{
-	return _params;
-}
-
-
-
-}
-
-
-
-
-
 
 
 
