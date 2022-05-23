@@ -157,7 +157,19 @@ protected:
 	*	@return  : success: OK, error: error
 	*/
 	virtual int parseRpcPacket(void)
-	{
+	{		
+		RpcPacket packet;
+
+		int result =  packet.parse( *_inBuffer  );
+		if ( pccl::STATE_SUCCESS != result )
+		{
+			return pccl::STATE_ERROR;
+		}
+
+		_route  = packet.getRoute();
+		_params = packet.getParams();
+		_doc    = packet.getDocument();
+		
 		return pccl::STATE_ERROR;
 	}
 
@@ -184,20 +196,6 @@ private:
 		
 	}
 
-
-
-
-		
-
-
-private:
-
-	#if XX_XX
-	int parsetHttpPacket();
-	int parsetJsonPacket();
-	#endif
-
-	
 
 	
 protected:

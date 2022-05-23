@@ -17,6 +17,7 @@
 #pragma once
 
 #include "BaseRpcPlus.h"
+#include "json.h"
 #include <map>
 #include <string>
 
@@ -33,10 +34,10 @@ public:
 	~BaseRpcPacket();
 
 public:
-	virtual  int   					parse()  ;
+	virtual  int   					parse(std::vector<char>& buffer)  ;
 	virtual std::string&  			getRoute(void)           = 0;	
 	virtual REQUEST_PARAMS&        	getParams(void)          = 0;
-	
+	virtual Json::Value&            getDocument(void)        = 0;	
 
 };
 

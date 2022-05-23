@@ -34,14 +34,21 @@ public:
 	~BaseRpcHttpPacket();
 
 public:
-	virtual  int   					parse()  ;
+	virtual  int   					parse(std::vector<char>& buffer)  ;
 	virtual std::string&  			getRoute(void)    ;	
 	virtual REQUEST_PARAMS&        	getParams(void)    ;
+	virtual Json::Value&        	getDocument(void)    ;
+
+
+private:
+	int                             parseJsonBody(const std::string& content);
+	void                            parseUrlBody(const std::string& content);
 
 
 private:
 	std::string       _route;
 	REQUEST_PARAMS    _params;
+	Json::Value       _document;
 	
 
 };
